@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<title>MuvMi Usability Test — Field Form</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+
+:root {
+  --bg: #f0f2f5;
+  --card: #ffffff;
+  --scenario-bg: #fffbeb;
+  --scenario-border: #f59e0b;
+  --scenario-text: #92400e;
+  --obs-bg: #f0fdf4;
+  --obs-border: #22c55e;
+  --obs-text: #166534;
+  --question-bg: #eff6ff;
+  --question-border: #3b82f6;
+  --question-text: #1e40af;
+  --primary: #2563eb;
+  --primary-hover: #1d4ed8;
+  --primary-light: #dbeafe;
+  --text: #111827;
+  --text-sec: #6b7280;
+  --text-ter: #9ca3af;
+  --border: #e5e7eb;
+  --border-focus: #93c5fd;
+  --input-bg: #f9fafb;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+  --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -2px rgba(0,0,0,0.05);
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding: 0;
+  padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px));
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Focus ring (a11y) ───────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+input:focus-visible, select:focus-visible, textarea:focus-visible {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-light);
+}
+
+.container {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+/* ── Page header ─────────────────────────────────── */
+.page-header {
+  text-align: center;
+  padding: 24px 0 20px;
+}
+
+.page-header h1 {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.02em;
+}
+
+.page-header .subtitle {
+  color: var(--text-sec);
+  font-size: 0.8rem;
+  margin-top: 4px;
+  font-weight: 400;
+}
+
+/* ── Header form ─────────────────────────────────── */
+.header-form {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-bottom: 28px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+}
+
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.form-group {
+  flex: 1;
+  min-width: 140px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-sec);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  height: 44px;
+  padding: 0 12px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 0.95rem;
+  background: var(--input-bg);
+  color: var(--text);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+/* ── Task cards ──────────────────────────────────── */
+.task-list { display: flex; flex-direction: column; gap: 20px; }
+
+.task-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.task-header {
+  background: var(--primary);
+  color: #fff;
+  padding: 14px 20px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: -0.01em;
+}
+
+.task-body { padding: 0; }
+
+/* ── Section labels ──────────────────────────────── */
+.section-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 20px 8px;
+  font-weight: 700;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.section-label.scenario-label { color: var(--scenario-text); }
+.section-label.obs-label { color: var(--obs-text); }
+.section-label.question-label { color: var(--question-text); }
+
+.section-icon {
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.scenario-label .section-icon { background: var(--scenario-border); }
+.obs-label .section-icon { background: var(--obs-border); }
+.question-label .section-icon { background: var(--question-border); }
+
+/* ── Scenario box ────────────────────────────────── */
+.scenario-box {
+  background: var(--scenario-bg);
+  border-left: 3px solid var(--scenario-border);
+  margin: 0 16px 12px;
+  padding: 14px 16px;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  font-size: 0.9rem;
+  line-height: 1.75;
+  color: var(--scenario-text);
+}
+
+/* ── Observation box ─────────────────────────────── */
+.obs-box {
+  background: var(--obs-bg);
+  border-left: 3px solid var(--obs-border);
+  margin: 0 16px 12px;
+  padding: 14px 16px;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+
+.obs-item { margin-bottom: 16px; }
+.obs-item:last-child { margin-bottom: 0; }
+
+.obs-item-label {
+  font-size: 0.88rem;
+  margin-bottom: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px;
+  line-height: 1.5;
+  color: var(--text);
+}
+
+.tag {
+  display: inline-block;
+  font-size: 0.6rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.tag-check { background: #dcfce7; color: #166534; }
+.tag-yesno { background: #ffedd5; color: #9a3412; }
+.tag-textarea { background: #ede9fe; color: #5b21b6; }
+
+/* Checkbox — touch-friendly 44px tap target */
+.checkbox-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.checkbox-wrap input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 24px;
+  height: 24px;
+  border: 2px solid var(--border);
+  border-radius: 6px;
+  background: #fff;
+  cursor: pointer;
+  position: relative;
+  flex-shrink: 0;
+  transition: all 0.15s;
+}
+
+.checkbox-wrap input[type="checkbox"]:checked {
+  background: var(--primary);
+  border-color: var(--primary);
+}
+
+.checkbox-wrap input[type="checkbox"]:checked::after {
+  content: '';
+  position: absolute;
+  left: 7px;
+  top: 3px;
+  width: 6px;
+  height: 12px;
+  border: solid #fff;
+  border-width: 0 2.5px 2.5px 0;
+  transform: rotate(45deg);
+}
+
+.checkbox-wrap label {
+  font-size: 0.9rem;
+  cursor: pointer;
+  padding: 10px 0;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+}
+
+/* Yes/No buttons */
+.yesno-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.yesno-btns {
+  display: flex;
+  gap: 8px;
+}
+
+.yesno-btn {
+  flex: 1;
+  height: 44px;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: #fff;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.yesno-btn:active { transform: scale(0.96); }
+
+.yesno-btn.sel-yes {
+  background: #dcfce7;
+  border-color: #22c55e;
+  color: #166534;
+}
+
+.yesno-btn.sel-no {
+  background: #fee2e2;
+  border-color: #ef4444;
+  color: #991b1b;
+}
+
+.yesno-note {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1.5px solid #86efac;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  min-height: 44px;
+  resize: vertical;
+  background: #fff;
+  font-family: inherit;
+  line-height: 1.5;
+  color: var(--text);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.obs-item select {
+  width: 100%;
+  height: 44px;
+  padding: 0 12px;
+  border: 1.5px solid #86efac;
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  background: #fff;
+  color: var(--text);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+/* Textarea */
+.obs-item textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1.5px solid #86efac;
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  min-height: 80px;
+  resize: vertical;
+  background: #fff;
+  font-family: inherit;
+  line-height: 1.5;
+  color: var(--text);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+/* ── Question box ────────────────────────────────── */
+.question-box {
+  background: var(--question-bg);
+  border-left: 3px solid var(--question-border);
+  margin: 0 16px 16px;
+  padding: 14px 16px;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+
+.q-item { margin-bottom: 20px; }
+.q-item:last-child { margin-bottom: 0; }
+
+.q-item-label {
+  font-size: 0.88rem;
+  margin-bottom: 10px;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--text);
+}
+
+/* Preset buttons */
+.preset-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.preset-btn {
+  padding: 6px 12px;
+  border: 1.5px solid #bfdbfe;
+  border-radius: 20px;
+  background: #fff;
+  font-size: 0.78rem;
+  color: var(--primary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: inherit;
+  line-height: 1.3;
+}
+
+.preset-btn:hover {
+  background: var(--primary-light);
+  border-color: var(--primary);
+}
+
+.preset-btn:active {
+  transform: scale(0.95);
+}
+
+.preset-btn.used {
+  background: var(--primary-light);
+  border-color: var(--primary);
+}
+
+.q-item textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1.5px solid #93c5fd;
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  min-height: 80px;
+  resize: vertical;
+  background: #fff;
+  font-family: inherit;
+  line-height: 1.5;
+  color: var(--text);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+/* ── Rating buttons ──────────────────────────────── */
+.rating-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.rating-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  border: 2px solid var(--border);
+  background: #fff;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+}
+
+.rating-btn:hover {
+  border-color: var(--primary);
+  background: var(--primary-light);
+}
+
+.rating-btn:active {
+  transform: scale(0.93);
+}
+
+.rating-btn.selected {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+  box-shadow: 0 2px 8px rgba(37,99,235,0.3);
+}
+
+.rating-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.68rem;
+  color: var(--text-ter);
+  margin-top: 6px;
+  padding: 0 4px;
+  font-weight: 500;
+}
+
+/* ── No observations ─────────────────────────────── */
+.no-obs {
+  color: var(--text-ter);
+  font-style: italic;
+  font-size: 0.85rem;
+}
+
+/* ── Export bar ───────────────────────────────────── */
+.export-wrap {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 12px 16px;
+  padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+  border-top: 1px solid var(--border);
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+}
+
+.export-btn {
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  height: 48px;
+  padding: 0 32px;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  max-width: 400px;
+  transition: background 0.2s, transform 0.1s;
+  letter-spacing: -0.01em;
+}
+
+.export-btn:hover { background: var(--primary-hover); }
+.export-btn:active { transform: scale(0.97); }
+
+/* ── Placeholder ─────────────────────────────────── */
+.placeholder-msg {
+  text-align: center;
+  color: var(--text-ter);
+  padding: 60px 20px;
+  font-size: 0.95rem;
+}
+
+/* ── Responsive ──────────────────────────────────── */
+@media (max-width: 480px) {
+  .container { padding: 12px; }
+  .form-group { min-width: 100%; }
+  .task-header { font-size: 0.9rem; padding: 12px 16px; }
+  .scenario-box, .obs-box, .question-box { margin: 0 12px 10px; padding: 12px; }
+  .page-header h1 { font-size: 1.2rem; }
+  .rating-btn { width: 40px; height: 40px; border-radius: 10px; font-size: 0.95rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="page-header">
+    <h1>MuvMi Usability Test</h1>
+    <p class="subtitle">Field Form — Home Page Redesign</p>
+  </div>
+
+  <div class="header-form">
+    <div class="form-row">
+      <div class="form-group">
+        <label for="participantId">Participant ID</label>
+        <input type="text" id="participantId" placeholder="เช่น P01">
+      </div>
+      <div class="form-group">
+        <label for="testDate">Date</label>
+        <input type="date" id="testDate">
+      </div>
+      <div class="form-group">
+        <label for="userType">User Type</label>
+        <select id="userType">
+          <option value="">— เลือกกลุ่ม —</option>
+          <option value="P.1">P.1 — New User</option>
+          <option value="P.2">P.2 — Casual User</option>
+          <option value="P.3">P.3 — Recurring User</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div id="taskContainer">
+    <p class="placeholder-msg">เลือก User Type เพื่อแสดง Tasks</p>
+  </div>
+</div>
+
+<div class="export-wrap">
+  <button class="export-btn" onclick="exportCSV()">Export as CSV</button>
+</div>
+
+<script>
+// ── Data ──────────────────────────────────────────────
+
+var taskData = {
+  "P.1": [
+    {
+      title: "Task 1: First Impression (Homepage)",
+      scenario: 'เปิดหน้า Home ให้ผู้ใช้ดู — "เมื่อเห็นหน้านี้ครั้งแรก บอกได้ไหมว่าเห็นอะไรบ้าง"',
+      observations: [
+        { type: "textarea", label: "สิ่งแรกที่ผู้ใช้สังเกตเห็นหรือกด", presets: ["Search", "Map", "Card"] }
+      ],
+      questions: [
+        { type: "text", label: "อะไรเป็นสิ่งแรกที่สะดุดตา?" },
+        { type: "text", label: 'ผู้ใช้เข้าใจคำว่า "Your Area" และ "Pickup at" หรือไม่', presets: ["เข้าใจ", "ไม่เข้าใจ"] },
+        { type: "text", label: "เมื่อเห็นหน้านี้ครั้งแรก คุณคิดว่าแอปนี้ใช้ทำอะไร?" },
+        { type: "text", label: "มีส่วนไหนที่คุณไม่เข้าใจหรือไม่แน่ใจว่าคืออะไร?" }
+      ]
+    },
+    {
+      title: "Task 2: Place Suggestions (Suggestion Section)",
+      scenario: 'ให้ผู้ใช้ดูส่วน "Get around Bangkok with MuvMi" และการ์ดสถานที่',
+      observations: [
+        { type: "textarea", label: "ผู้ใช้ scroll ลงมาเห็นส่วนนี้เองหรือต้องชี้ให้ดู", presets: ["เห็นเอง", "ต้องชี้"] }
+      ],
+      questions: [
+        { type: "text", label: 'คุณคิดว่าส่วน "Get around Bangkok with MuvMi" คืออะไร และมีไว้ทำอะไร?', presets: ["แนะนำสถานที่"] },
+        { type: "text", label: "หากกดที่การ์ดสถานที่ คุณคาดว่าจะเกิดอะไรขึ้น?", presets: ["เดินทาง", "ดูรายละเอียด"] },
+        { type: "text", label: "ข้อมูลบนการ์ดเพียงพอให้คุณตัดสินใจกดหรือไม่? อยากเห็นข้อมูลอะไรเพิ่ม?", presets: ["เพียงพอ", "ไม่พอ"] },
+        { type: "text", label: "ระยะทางที่แสดง คุณเข้าใจว่าเป็นระยะทางจากที่ไหน?", presets: ["ตัวเอง"] },
+        { type: "text", label: "สถานที่แนะนำเหล่านี้มีประโยชน์กับคุณแค่ไหน และในสถานการณ์ใด?" }
+      ]
+    },
+    {
+      title: "Task 3: Banner & Trending (Promotion)",
+      scenario: 'ให้ผู้ใช้ดูแบนเนอร์และส่วน "Trending now"',
+      observations: [
+        { type: "textarea", label: "ผู้ใช้พยายามกดแบนเนอร์หรือไม่", presets: ["ใช่", "ไม่"] }
+      ],
+      questions: [
+        { type: "text", label: "คุณเข้าใจว่าแบนเนอร์นี้กำลังสื่อสารอะไร?", presets: ["โฆษณา", "โปรโมชัน"] },
+        { type: "text", label: "คิดว่า Banner กดได้ไหม? ถ้ากดแล้วคิดว่าจะนำไปไหน?", presets: ["เปิดรายละเอียด", "กดไม่ได้"] },
+        { type: "text", label: "เนื้อหาส่วนไหนช่วยให้คุณตัดสินใจเดินทางได้มากที่สุด?" },
+        { type: "text", label: "มีส่วนไหนที่คุณรู้สึกว่าไม่เกี่ยวข้องหรือไม่จำเป็นไหม?" }
+      ]
+    },
+    {
+      title: "Task 4: Home Navigation (Overall Design)",
+      scenario: 'โจทย์หา 3 อย่าง: ประวัติการเดินทาง / ฝ่ายช่วยเหลือ / ยอดเงินหรือการชำระเงิน',
+      observations: [
+        { type: "textarea", label: 'ผู้ใช้หา "ประวัติการเดินทาง" เจอ', presets: ["ใช่", "ไม่"] },
+        { type: "textarea", label: 'ผู้ใช้หา "ฝ่ายช่วยเหลือ" เจอ', presets: ["ใช่", "ไม่"] },
+        { type: "textarea", label: 'ผู้ใช้หา "ยอดเงิน / การชำระเงิน" เจอ', presets: ["ใช่", "ไม่"] }
+      ],
+      questions: [
+        { type: "rating", label: "หน้านี้ช่วยให้เริ่มจองรถได้ง่ายแค่ไหน? ให้คะแนน 1–7" },
+        { type: "text", label: "สิ่งที่ทำให้คุณสับสนมากที่สุดคืออะไร?" },
+        { type: "text", label: "หากปรับปรุงได้หนึ่งอย่าง คุณอยากให้เปลี่ยนอะไร?" },
+      ]
+    },
+    {
+      title: "Task 5: Booking Flow (Requesting Flow)",
+      scenario: 'โจทย์: "คุณเพิ่งลง app MuvMi เป็นครั้งแรก คุณอยู่แถว EmQuartier และต้องการไป Siam Paragon ลองจองรถดู" (หมายเหตุ: ผู้ใช้เห็นหน้าจอมาแล้วจาก task ก่อนหน้า — ไม่ใช่ cold-start)',
+      observations: [
+        { type: "textarea", label: "ผู้ใช้รู้ได้อย่างไรว่าต้องเริ่มจากตรงไหน (Search / Map / อื่น)", presets: ["Search", "Map", "Card"] },
+        { type: "textarea", label: "Task สำเร็จหรือไม่", presets: ["สำเร็จ", "ไม่สำเร็จ", "ต้องช่วย"] },
+        { type: "textarea", label: "เวลาที่ใช้ (วินาที)" }
+      ],
+      questions: [
+        { type: "text", label: "ทำไมถึงเลือกใช้ Search / Map?" },
+        { type: "text", label: "มีขั้นตอนไหนที่ทำให้ลังเลหรือสับสนไหม?" },
+        { type: "text", label: "ถ้าต้องการเปลี่ยนจุดรับ คุณคิดว่าจะต้องกดตรงไหน?", presets: ["Pickup หน้าโฮม", "Pickup หน้า Search"] }
+      ]
+    }
+  ],
+
+  "P.2": [
+    {
+      title: "Task 1: First Impression & Behavior (Homepage)",
+      scenario: "ถามพฤติกรรมปัจจุบัน แล้วให้ดูหน้า Home ใหม่",
+      observations: [
+        { type: "textarea", label: "อะไรเป็นสิ่งแรกที่ผู้ใช้สังเกตเห็น", presets: ["Search", "Map", "Card", "Go Again"] }
+      ],
+      questions: [
+        { type: "text", label: "ปกติคุณใช้ MuvMi ในโอกาสไหนบ้าง? ครั้งล่าสุดที่ใช้ คุณเดินทางจากที่ไหนไปที่ไหน?" },
+        { type: "text", label: "หน้า Home ใหม่นี้แตกต่างจากที่คุณเคยใช้อย่างไร?" },
+        { type: "text", label: "มีข้อมูลอะไรที่คุณรู้สึกว่ามีประโยชน์มากขึ้น? มีส่วนไหนที่ไม่เข้าใจหรือรู้สึกว่าไม่จำเป็นไหม?" },
+        { type: "text", label: "คุณเข้าใจพื้นที่ให้บริการและจุดรับที่แสดงอยู่หรือไม่?", presets: ["เข้าใจ", "ไม่เข้าใจ"] }
+      ]
+    },
+    {
+      title: "Task 2: Booking Flow (Requesting Flow)",
+      scenario: 'โจทย์: "คุณอยู่แถว EmQuartier และต้องการไป Siam Paragon ลองจองรถดู"',
+      observations: [
+        { type: "textarea", label: "ผู้ใช้รู้ทันทีไหมว่าต้องเริ่มจากตรงไหน (Search / Go Again / Map)", presets: ["Search", "Map", "Go Again"] },
+        { type: "textarea", label: "ความเร็ว — มีขั้นตอนไหนที่ลังเลหรือสับสน (จับเวลา)" },
+        { type: "textarea", label: "Task สำเร็จหรือไม่", presets: ["สำเร็จ", "ไม่สำเร็จ", "ต้องช่วย"] }
+      ],
+      questions: [
+        { type: "text", label: "ทำไมถึงเลือกใช้ Search / Map?" },
+        { type: "text", label: "หน้านี้ช่วยให้เริ่มจองได้เร็วกว่าเดิมหรือไม่?", presets: ["เร็วขึ้น", "เท่าเดิม", "ช้าลง"] }
+      ]
+    },
+    {
+      title: "Task 3: Go Again (Repeat Trips)",
+      scenario: 'โจทย์: "คุณเคยไป Phrom Phong BTS มาก่อน อยากไปอีกครั้ง ลองจองรถดู"',
+      observations: [
+        { type: "textarea", label: 'ผู้ใช้กดสถานที่ในส่วน "Go again"', presets: ["ใช่", "ไม่"] }
+      ],
+      questions: [
+        { type: "text", label: 'คุณเข้าใจว่า "Go again" ใช้ทำอะไร?', presets: ["เดินทางซ้ำ", "ไม่เข้าใจ"] },
+        { type: "text", label: "ข้อมูลบนการ์ดเพียงพอให้เลือกหรือไม่?", presets: ["เพียงพอ", "ไม่พอ"] },
+        { type: "text", label: "คุณคิดว่าจะใช้ฟีเจอร์นี้บ่อยแค่ไหน?", presets: ["ทุกครั้ง", "บางครั้ง", "ไม่ใช้"] }
+      ]
+    },
+    {
+      title: "Task 4: Promotions & Suggestions (Happy Hour)",
+      scenario: 'ให้ผู้ใช้ดูโปรโมชัน "Happy Hour 20% off" และสถานที่แนะนำ',
+      observations: [],
+      questions: [
+        { type: "text", label: 'คุณเข้าใจว่าส่วน "Happy Hour 20% off" คืออะไร? เข้าใจหรือไม่ว่าส่วนลดใช้กับสถานที่ เวลา หรือเที่ยวเดินทางแบบใด?', presets: ["เข้าใจ", "ไม่เข้าใจ"] },
+        { type: "text", label: "ข้อมูลอะไรที่คุณอยากเห็นก่อนตัดสินใจกด?" },
+        { type: "text", label: "สถานที่แนะนำทำให้คุณสนใจเดินทางไปที่ใหม่หรือไม่?", presets: ["สนใจ", "ไม่สนใจ"] },
+        { type: "text", label: 'ระหว่าง "สถานที่ที่เคยไป" กับ "สถานที่พร้อมส่วนลด" ส่วนไหนมีประโยชน์มากกว่า?', presets: ["สถานที่เคยไป", "สถานที่พร้อมส่วนลด"] }
+      ]
+    },
+    {
+      title: "Task 5: Wrap-up & Rating (Overall)",
+      scenario: "พิจารณาหน้า Home โดยรวม",
+      observations: [],
+      questions: [
+        { type: "text", label: "ส่วนไหนของหน้า Home ที่ผู้ใช้ใช้มากที่สุด (gaze pattern)", presets: ["Search", "Map", "Go Again", "Card", "Banner"] },
+        { type: "text", label: "มีข้อมูลใดรบกวนหรือทำให้การจองรถยากขึ้นไหม?" },
+        { type: "text", label: "หน้า Home นี้ช่วยให้คุณรู้ว่าจะไปที่ไหนหรือได้โปรโมชันอะไรเพิ่มขึ้นหรือไม่?", presets: ["ช่วย", "ไม่ช่วย"] },
+        { type: "rating", label: "ให้คะแนนความง่ายในการใช้งาน 1–7 เพราะอะไร?" },
+        { type: "text", label: "หากปรับได้หนึ่งอย่าง คุณอยากให้เปลี่ยนอะไร?" }
+      ]
+    }
+  ],
+
+  "P.3": [
+    {
+      title: "Task 1: Routine Booking (Daily Commute)",
+      scenario: 'ถามพฤติกรรม แล้วโจทย์: "ลองจองเที่ยวที่คุณเดินทางเป็นประจำ โดยทำเหมือนที่คุณใช้จริง"',
+      observations: [
+        { type: "textarea", label: "ผู้ใช้เลือกเริ่มจากส่วนไหน (Home / Work / Search)", presets: ["Home", "Work", "Search", "Saved Places"] },
+        { type: "textarea", label: "เริ่มจองได้เร็วเท่าที่คาดหวังหรือไม่ (จับเวลา)", presets: ["เร็ว", "ช้า"] },
+        { type: "textarea", label: "Task สำเร็จหรือไม่", presets: ["สำเร็จ", "ไม่สำเร็จ", "ต้องช่วย"] }
+      ],
+      questions: [
+        { type: "text", label: "ปกติคุณใช้ MuvMi บ่อยแค่ไหน? ส่วนใหญ่ใช้เดินทางไปที่ไหน และในช่วงเวลาใด?", presets: ["ทุกวัน", "สัปดาห์ละ 2-3 ครั้ง", "สัปดาห์ละครั้ง"] },
+        { type: "text", label: "ปกติคุณเริ่มจองรถอย่างไร?", presets: ["Search", "Map", "Saved Places"] },
+        { type: "text", label: "มีอะไรที่ทำให้การจองช้าหรือรบกวนการใช้งานไหม?" },
+        { type: "text", label: "เมื่อเทียบกับหน้าเดิม หน้านี้จองง่ายหรือเร็วขึ้นหรือไม่?", presets: ["เร็วขึ้น", "เท่าเดิม", "ช้าลง"] }
+      ]
+    },
+    {
+      title: "Task 2: Saved Places (Quick Access)",
+      scenario: 'โจทย์: "คุณบันทึกที่ทำงาน (Work) ไว้แล้ว ตอนนี้อยากไปทำงาน ลองจองรถดู"',
+      observations: [
+        { type: "textarea", label: "ผู้ใช้กดสถานที่ไหน (Home / Work / Gym)", presets: ["Home", "Work", "Gym", "ไม่เข้าใจ"] },
+        { type: "textarea", label: "ผู้ใช้รู้/พยายามวิธีเพิ่ม แก้ไข หรือลบสถานที่", presets: ["ใช่", "ไม่"] }
+      ],
+      questions: [
+        { type: "text", label: 'คุณเข้าใจว่า "Saved places" ใช้ทำอะไร?', presets: ["จองเร็วขึ้น", "ไม่เข้าใจ"] },
+        { type: "text", label: "ข้อมูลบนปุ่มเพียงพอให้แยกแต่ละสถานที่ได้หรือไม่?", presets: ["เพียงพอ", "ไม่พอ"] },
+        { type: "text", label: "ฟีเจอร์นี้ช่วยให้เริ่มจองได้เร็วขึ้นแค่ไหน?", presets: ["เร็วขึ้นมาก", "เร็วขึ้นเล็กน้อย", "ไม่ต่าง"] }
+      ]
+    },
+    {
+      title: "Task 3: Pickup & Service Area (Coverage)",
+      scenario: '"รู้ไหมว่าตอนนี้อยู่พื้นที่ไหน และจุดรับเป็นจุดไหน?"',
+      observations: [
+        { type: "textarea", label: "ผู้ใช้สังเกตเห็นจุดรับที่ระบบเลือกให้", presets: ["ใช่", "ไม่"] }
+      ],
+      questions: [
+        { type: "text", label: "จุดรับที่แสดงตรงกับจุดที่คุณต้องการขึ้นรถหรือไม่?", presets: ["ตรง", "ไม่ตรง"] },
+        { type: "text", label: "หากต้องการเปลี่ยนจุดรับ คุณจะกดตรงไหน?", presets: ["Pickup หน้าโฮม", "Pickup หน้า Search"] },
+        { type: "text", label: "คุณเข้าใจพื้นที่ให้บริการที่แสดงด้านบนหรือไม่? ข้อมูลส่วนนี้ชัดเจนเพียงพอก่อนเริ่มจองหรือไม่?", presets: ["เข้าใจ", "ไม่เข้าใจ"] }
+      ]
+    },
+    {
+      title: "Task 4: Promotions & Suggestions (Happy Hour)",
+      scenario: "ให้ผู้ใช้ดูโปรโมชัน Happy Hour และสถานที่แนะนำ",
+      observations: [
+        { type: "textarea", label: "ผู้ใช้สังเกตเห็นโปรโมชัน Happy Hour", presets: ["ใช่", "ไม่"] }
+      ],
+      questions: [
+        { type: "text", label: "คุณเข้าใจทันทีไหมว่าได้รับส่วนลดเมื่อใดและใช้อย่างไร?", presets: ["เข้าใจ", "ไม่เข้าใจ"] },
+        { type: "text", label: "โปรโมชันนี้มีผลต่อการเลือกจุดหมายของคุณหรือไม่?", presets: ["มีผล", "ไม่มีผล"] },
+        { type: "text", label: "สถานที่แนะนำมีประโยชน์สำหรับคุณ หรือทำให้หน้าดูรกขึ้น?", presets: ["มีประโยชน์", "ดูรก"] }
+      ]
+    },
+    {
+      title: "Task 5: Wrap-up & Feedback (Overall)",
+      scenario: "พิจารณาหน้า Home โดยรวมเมื่อใช้เป็นผู้ใช้ประจำ",
+      observations: [],
+      questions: [
+        { type: "text", label: "ส่วนไหนของหน้า Home ที่ผู้ใช้จะใช้บ่อยที่สุด", presets: ["Search", "Map", "Saved Places", "Card", "Banner"] },
+        { type: "text", label: "มีอะไรที่ใช้พื้นที่บนหน้าจอมากเกินไปโดยไม่มีประโยชน์หรือไม่?" },
+        { type: "text", label: "มีฟีเจอร์จากหน้าเดิมที่คุณหาไม่เจอไหม?" },
+        { type: "text", label: "หน้าใหม่นี้ช่วยให้จองเที่ยวประจำได้เร็วขึ้นหรือช้าลง เพราะอะไร?", presets: ["เร็วขึ้น", "เท่าเดิม", "ช้าลง"] },
+        { type: "rating", label: "ให้คะแนนความง่ายในการใช้งาน 1–7 เพราะอะไร?" },
+        { type: "text", label: "หากปรับได้หนึ่งอย่าง คุณอยากให้เปลี่ยนอะไร?" }
+      ]
+    }
+  ]
+};
+
+// ── Set default date ──────────────────────────────────
+document.getElementById('testDate').valueAsDate = new Date();
+
+// ── Render on user type change ────────────────────────
+document.getElementById('userType').addEventListener('change', function() {
+  renderTasks(this.value);
+});
+
+function renderTasks(userType) {
+  var container = document.getElementById('taskContainer');
+
+  if (!userType || !taskData[userType]) {
+    container.innerHTML = '<p class="placeholder-msg">เลือก User Type เพื่อแสดง Tasks</p>';
+    return;
+  }
+
+  var tasks = taskData[userType];
+  var html = '<div class="task-list">';
+
+  for (var t = 0; t < tasks.length; t++) {
+    var task = tasks[t];
+    var taskId = userType.replace('.', '') + '_T' + (t + 1);
+
+    html += '<div class="task-card">';
+    html += '<div class="task-header">' + escapeHtml(task.title) + '</div>';
+    html += '<div class="task-body">';
+
+    // Scenario
+    html += '<div class="section-label scenario-label"><span class="section-icon">S</span> Scenario / โจทย์</div>';
+    html += '<div class="scenario-box">' + escapeHtml(task.scenario) + '</div>';
+
+    // Observations
+    html += '<div class="section-label obs-label"><span class="section-icon">O</span> Observation</div>';
+    if (task.observations.length === 0) {
+      html += '<div class="obs-box"><p class="no-obs">ไม่มี observation สำหรับ task นี้</p></div>';
+    } else {
+      html += '<div class="obs-box">';
+      for (var o = 0; o < task.observations.length; o++) {
+        var obs = task.observations[o];
+        var obsId = taskId + '_obs' + o;
+
+        html += '<div class="obs-item">';
+
+        if (obs.type === 'checkbox') {
+          html += '<div class="obs-item-label"><span class="tag tag-check">check</span> ' + escapeHtml(obs.label) + '</div>';
+          html += '<div class="checkbox-wrap"><input type="checkbox" id="' + obsId + '"> <label for="' + obsId + '">ใช่</label></div>';
+        } else if (obs.type === 'yesno') {
+          html += '<div class="obs-item-label"><span class="tag tag-yesno">yes / no</span> ' + escapeHtml(obs.label) + '</div>';
+          html += '<div class="yesno-wrap">';
+          html += '<input type="hidden" id="' + obsId + '" value="">';
+          html += '<div class="yesno-btns">';
+          html += '<button type="button" class="yesno-btn" data-target="' + obsId + '" data-value="ใช่" onclick="selectYesNo(this)" aria-label="ใช่">ใช่</button>';
+          html += '<button type="button" class="yesno-btn" data-target="' + obsId + '" data-value="ไม่ใช่" onclick="selectYesNo(this)" aria-label="ไม่ใช่">ไม่ใช่</button>';
+          html += '</div>';
+          html += '<textarea class="yesno-note" id="' + obsId + '_note" placeholder="หมายเหตุเพิ่มเติม (ถ้ามี)..." aria-label="หมายเหตุ ' + escapeHtml(obs.label) + '"></textarea>';
+          html += '</div>';
+        } else {
+          html += '<div class="obs-item-label"><span class="tag tag-textarea">เขียนตอบ</span> ' + escapeHtml(obs.label) + '</div>';
+          if (obs.presets && obs.presets.length > 0) {
+            html += '<div class="preset-wrap">';
+            for (var op = 0; op < obs.presets.length; op++) {
+              html += '<button type="button" class="preset-btn" data-target="' + obsId + '" onclick="appendPreset(this)">' + escapeHtml(obs.presets[op]) + '</button>';
+            }
+            html += '</div>';
+          }
+          html += '<textarea id="' + obsId + '" placeholder="บันทึกสิ่งที่สังเกต..." aria-label="' + escapeHtml(obs.label) + '"></textarea>';
+        }
+
+        html += '</div>';
+      }
+      html += '</div>';
+    }
+
+    // Questions
+    html += '<div class="section-label question-label"><span class="section-icon">Q</span> คำถามหลังทำ Task</div>';
+    html += '<div class="question-box">';
+    for (var q = 0; q < task.questions.length; q++) {
+      var ques = task.questions[q];
+      var qId = taskId + '_q' + q;
+      var qNum = q + 1;
+
+      html += '<div class="q-item">';
+      html += '<div class="q-item-label">' + qNum + '. ' + escapeHtml(ques.label) + '</div>';
+
+      if (ques.type === 'rating') {
+        html += '<input type="hidden" id="' + qId + '" value="">';
+        html += '<div class="rating-wrap" role="group" aria-label="คะแนน 1 ถึง 7">';
+        for (var rv = 1; rv <= 7; rv++) {
+          html += '<button type="button" class="rating-btn" data-target="' + qId + '" data-value="' + rv + '" onclick="selectRating(this)" aria-label="คะแนน ' + rv + '">' + rv + '</button>';
+        }
+        html += '</div>';
+        html += '<div class="rating-labels"><span>1 — ยากมาก</span><span>7 — ง่ายมาก</span></div>';
+      } else {
+        if (ques.presets && ques.presets.length > 0) {
+          html += '<div class="preset-wrap">';
+          for (var p = 0; p < ques.presets.length; p++) {
+            html += '<button type="button" class="preset-btn" data-target="' + qId + '" onclick="appendPreset(this)">' + escapeHtml(ques.presets[p]) + '</button>';
+          }
+          html += '</div>';
+        }
+        html += '<textarea id="' + qId + '" placeholder="คำตอบ..." aria-label="' + escapeHtml(ques.label) + '"></textarea>';
+      }
+
+      html += '</div>';
+    }
+    html += '</div>';
+
+    html += '</div>'; // task-body
+    html += '</div>'; // task-card
+  }
+
+  html += '</div>';
+  container.innerHTML = html;
+}
+
+// ── CSV Export ─────────────────────────────────────────
+function exportCSV() {
+  var pid = document.getElementById('participantId').value.trim();
+  var date = document.getElementById('testDate').value;
+  var userType = document.getElementById('userType').value;
+
+  if (!pid) { alert('กรุณากรอก Participant ID'); return; }
+  if (!date) { alert('กรุณาเลือกวันที่'); return; }
+  if (!userType) { alert('กรุณาเลือก User Type'); return; }
+
+  var tasks = taskData[userType];
+  if (!tasks) return;
+
+  var typeNames = { 'P.1': 'New user', 'P.2': 'Casual', 'P.3': 'Regular' };
+  var userTypeName = typeNames[userType] || userType;
+
+  var rows = [];
+  rows.push(['Participant ID', 'Date', 'User Type', 'Task', 'Question / Observation', 'Answer']);
+
+  for (var t = 0; t < tasks.length; t++) {
+    var task = tasks[t];
+    var taskId = userType.replace('.', '') + '_T' + (t + 1);
+    var taskName = task.title;
+
+    // Observations
+    for (var o = 0; o < task.observations.length; o++) {
+      var obs = task.observations[o];
+      var obsId = taskId + '_obs' + o;
+      var el = document.getElementById(obsId);
+      var answer = '';
+
+      if (obs.type === 'checkbox') {
+        answer = el.checked ? 'ใช่' : 'ไม่';
+      } else if (obs.type === 'yesno') {
+        answer = el.value || '';
+        var noteEl = document.getElementById(obsId + '_note');
+        var note = noteEl ? noteEl.value.trim() : '';
+        if (note) answer += ' — ' + note;
+      } else {
+        answer = el.value || '';
+      }
+      rows.push([pid, date, userTypeName, taskName, obs.label, answer]);
+    }
+
+    // Questions
+    for (var q = 0; q < task.questions.length; q++) {
+      var ques = task.questions[q];
+      var qId = taskId + '_q' + q;
+      var qEl = document.getElementById(qId);
+      var qNum = q + 1;
+      var qAnswer = qEl.value || '';
+      var qItem = qNum + '. ' + ques.label;
+      rows.push([pid, date, userTypeName, taskName, qItem, qAnswer]);
+    }
+  }
+
+  // Build CSV string
+  var csvContent = '\uFEFF'; // UTF-8 BOM for Excel compatibility
+  for (var r = 0; r < rows.length; r++) {
+    var line = '';
+    for (var c = 0; c < rows[r].length; c++) {
+      if (c > 0) line += ',';
+      line += csvEscape(rows[r][c]);
+    }
+    csvContent += line + '\r\n';
+  }
+
+  // Download
+  var filename = pid + '_' + userTypeName.replace(/\s+/g, '') + '_' + date + '.csv';
+  var blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+function csvEscape(val) {
+  var str = String(val);
+  if (str.indexOf('"') !== -1 || str.indexOf(',') !== -1 || str.indexOf('\n') !== -1 || str.indexOf('\r') !== -1) {
+    return '"' + str.replace(/"/g, '""') + '"';
+  }
+  return str;
+}
+
+function appendPreset(btn) {
+  var target = btn.getAttribute('data-target');
+  var textarea = document.getElementById(target);
+  var text = btn.textContent;
+  if (textarea.value) {
+    textarea.value += ', ' + text;
+  } else {
+    textarea.value = text;
+  }
+  btn.classList.add('used');
+}
+
+function selectYesNo(btn) {
+  var target = btn.getAttribute('data-target');
+  var value = btn.getAttribute('data-value');
+  document.getElementById(target).value = value;
+  var siblings = btn.parentNode.querySelectorAll('.yesno-btn');
+  for (var i = 0; i < siblings.length; i++) {
+    siblings[i].classList.remove('sel-yes', 'sel-no');
+  }
+  btn.classList.add(value === 'ใช่' ? 'sel-yes' : 'sel-no');
+}
+
+function selectRating(btn) {
+  var target = btn.getAttribute('data-target');
+  var value = btn.getAttribute('data-value');
+  document.getElementById(target).value = value;
+  var siblings = btn.parentNode.querySelectorAll('.rating-btn');
+  for (var i = 0; i < siblings.length; i++) {
+    siblings[i].classList.remove('selected');
+  }
+  btn.classList.add('selected');
+}
+
+function escapeHtml(str) {
+  var div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+</script>
+</body>
+</html>
