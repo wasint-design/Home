@@ -507,26 +507,60 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
   z-index: 100;
   display: flex;
   justify-content: center;
+  gap: 8px;
 }
 
 .export-btn {
-  background: var(--primary);
-  color: #fff;
   border: none;
   height: 48px;
-  padding: 0 32px;
+  padding: 0 20px;
   border-radius: 12px;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
-  width: 100%;
-  max-width: 400px;
+  flex: 1;
+  max-width: 200px;
   transition: background 0.2s, transform 0.1s;
   letter-spacing: -0.01em;
 }
 
-.export-btn:hover { background: var(--primary-hover); }
 .export-btn:active { transform: scale(0.97); }
+
+.btn-csv {
+  background: var(--primary);
+  color: #fff;
+}
+
+.btn-csv:hover { background: var(--primary-hover); }
+
+.btn-sheets {
+  background: #34a853;
+  color: #fff;
+}
+
+.btn-sheets:hover { background: #2d9249; }
+
+.copy-toast {
+  position: fixed;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: #1a1a1a;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  opacity: 0;
+  transition: opacity 0.2s, transform 0.2s;
+  z-index: 200;
+  pointer-events: none;
+}
+
+.copy-toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
 
 /* ── Placeholder ─────────────────────────────────── */
 .placeholder-msg {
@@ -583,8 +617,10 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
 </div>
 
 <div class="export-wrap">
-  <button class="export-btn" onclick="exportCSV()">Export as CSV</button>
+  <button class="export-btn btn-sheets" onclick="copyToSheets()">Copy to Sheets</button>
+  <button class="export-btn btn-csv" onclick="exportCSV()">Export CSV</button>
 </div>
+<div class="copy-toast" id="copyToast">Copied to clipboard</div>
 
 <script>
 // ── Data ──────────────────────────────────────────────
@@ -909,51 +945,40 @@ function renderTasks(userType) {
   container.innerHTML = html;
 }
 
-// ── CSV Export ─────────────────────────────────────────
-function exportCSV() {
+// ── Collect rows (shared) ──────────────────────────────
+var typeNames = { 'P.1': 'New user', 'P.2': 'Casual', 'P.3': 'Regular' };
+
+function collectRows(includeHeader) {
   var pid = document.getElementById('participantId').value.trim();
   var date = document.getElementById('testDate').value;
   var userType = document.getElementById('userType').value;
 
-  if (!pid) { alert('กรุณากรอก Participant ID'); return; }
-  if (!date) { alert('กรุณาเลือกวันที่'); return; }
-  if (!userType) { alert('กรุณาเลือก User Type'); return; }
+  if (!pid) { alert('กรุณากรอก Participant ID'); return null; }
+  if (!date) { alert('กรุณาเลือกวันที่'); return null; }
+  if (!userType) { alert('กรุณาเลือก User Type'); return null; }
 
   var tasks = taskData[userType];
-  if (!tasks) return;
+  if (!tasks) return null;
 
-  var typeNames = { 'P.1': 'New user', 'P.2': 'Casual', 'P.3': 'Regular' };
   var userTypeName = typeNames[userType] || userType;
-
   var rows = [];
-  rows.push(['Participant ID', 'Date', 'User Type', 'Task', 'Question / Observation', 'Answer']);
+  if (includeHeader) {
+    rows.push(['Participant ID', 'Date', 'User Type', 'Task', 'Question / Observation', 'Answer']);
+  }
 
   for (var t = 0; t < tasks.length; t++) {
     var task = tasks[t];
     var taskId = userType.replace('.', '') + '_T' + (t + 1);
     var taskName = task.title;
 
-    // Observations
     for (var o = 0; o < task.observations.length; o++) {
       var obs = task.observations[o];
       var obsId = taskId + '_obs' + o;
       var el = document.getElementById(obsId);
-      var answer = '';
-
-      if (obs.type === 'checkbox') {
-        answer = el.checked ? 'ใช่' : 'ไม่';
-      } else if (obs.type === 'yesno') {
-        answer = el.value || '';
-        var noteEl = document.getElementById(obsId + '_note');
-        var note = noteEl ? noteEl.value.trim() : '';
-        if (note) answer += ' — ' + note;
-      } else {
-        answer = el.value || '';
-      }
+      var answer = el.value || '';
       rows.push([pid, date, userTypeName, taskName, obs.label, answer]);
     }
 
-    // Questions
     for (var q = 0; q < task.questions.length; q++) {
       var ques = task.questions[q];
       var qId = taskId + '_q' + q;
@@ -964,6 +989,15 @@ function exportCSV() {
       rows.push([pid, date, userTypeName, taskName, qItem, qAnswer]);
     }
   }
+
+  return { rows: rows, pid: pid, date: date, userTypeName: userTypeName };
+}
+
+// ── CSV Export ─────────────────────────────────────────
+function exportCSV() {
+  var data = collectRows(true);
+  if (!data) return;
+  var rows = data.rows;
 
   // Build CSV string
   var csvContent = '\uFEFF'; // UTF-8 BOM for Excel compatibility
@@ -977,7 +1011,7 @@ function exportCSV() {
   }
 
   // Download
-  var filename = pid + '_' + userTypeName.replace(/\s+/g, '') + '_' + date + '.csv';
+  var filename = data.pid + '_' + data.userTypeName.replace(/\s+/g, '') + '_' + data.date + '.csv';
   var blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
   var url = URL.createObjectURL(blob);
   var a = document.createElement('a');
@@ -987,6 +1021,39 @@ function exportCSV() {
   a.click();
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
+}
+
+// ── Copy to Sheets (tab-separated) ────────────────────
+function copyToSheets() {
+  var data = collectRows(false);
+  if (!data) return;
+
+  var tsv = '';
+  for (var r = 0; r < data.rows.length; r++) {
+    tsv += data.rows[r].join('\t') + '\n';
+  }
+
+  navigator.clipboard.writeText(tsv).then(function() {
+    showToast('Copied — paste ลง Google Sheets ได้เลย');
+  }, function() {
+    // fallback
+    var ta = document.createElement('textarea');
+    ta.value = tsv;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    showToast('Copied — paste ลง Google Sheets ได้เลย');
+  });
+}
+
+function showToast(msg) {
+  var toast = document.getElementById('copyToast');
+  toast.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(function() { toast.classList.remove('show'); }, 2500);
 }
 
 function csvEscape(val) {
