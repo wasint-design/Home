@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Muvmi — Nearby Drop-off</title>
+  <link rel="manifest" href="manifest.json">
+  <!-- Leaflet interactive map -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="pages/dropoff/dropoff.css">
+  <link rel="stylesheet" href="css/hoppoint-banner.css">
+  <link rel="stylesheet" href="css/save-favorite.css">
+</head>
+<body>
+
+  <div class="phone">
+
+    <!-- ===== MAP SECTION ===== -->
+    <div class="dropoff-map" id="dropoffMap">
+
+      <!-- Leaflet interactive map (fills container via position:absolute) -->
+      <div id="mapLeaflet"></div>
+
+      <!-- Status bar (overlays map) -->
+      <div class="status-bar">
+        <span class="status-bar-time">9:41</span>
+        <div class="status-bar-icons">
+          <img src="assets/icons/signal.svg" alt="" width="16" height="16">
+          <img src="assets/icons/wifi.svg" alt="" width="16" height="16">
+          <img src="assets/icons/battery.svg" alt="" width="18" height="18">
+        </div>
+      </div>
+
+      <!-- Header: back + destination pill -->
+      <div class="map-header">
+        <button class="map-back-btn tappable" onclick="history.back()">
+          <img src="assets/icons/back-btn.svg" alt="Back" width="32" height="32">
+        </button>
+        <div class="map-dest-pill tappable" onclick="history.back()">
+          <img src="assets/icons/location-pin-dest.svg" alt="" width="14" height="16">
+          <span class="map-dest-name" data-id="destName">Siam Paragon</span>
+        </div>
+      </div>
+
+      <!-- GPS recenter button -->
+      <button class="map-gps-btn tappable" onclick="recenterMap()">
+        <img src="assets/icons/gps-location.svg" alt="" width="18" height="18">
+      </button>
+
+    </div><!-- /dropoff-map -->
+
+    <!-- ===== BOTTOM SHEET ===== -->
+    <div class="dropoff-sheet">
+
+      <p class="sheet-title">Choose your drop-off point</p>
+
+      <!-- Scrollable hop-point list -->
+      <div class="sheet-list" id="sheetList" data-drag="vertical">
+
+        <div class="dropoff-item selected tappable" data-hp="1" onclick="selectHoppoint(1)">
+          <div class="hp-icon">
+            <div class="hp-pin-wrap">
+              <img src="assets/icons/hop-point-list.svg" alt="" class="hp-pin-img">
+              <span class="hp-letter">A</span>
+            </div>
+          </div>
+          <div class="hp-info">
+            <span class="hp-name">Sukhumvit Soi 31 · Hop-point 4</span>
+            <span class="hp-dist">1.2 km</span>
+          </div>
+          <button class="hp-info-btn tappable" onclick="event.stopPropagation(); openHpInfo(1)">
+            <img src="assets/icons/info-circle.svg" alt="" width="12" height="12">
+          </button>
+        </div>
+
+        <div class="dropoff-item tappable" data-hp="2" onclick="selectHoppoint(2)">
+          <div class="hp-icon">
+            <div class="hp-pin-wrap">
+              <img src="assets/icons/hop-point-list.svg" alt="" class="hp-pin-img">
+              <span class="hp-letter">B</span>
+            </div>
+          </div>
+          <div class="hp-info">
+            <span class="hp-name">Sukhumvit Soi 33 · Hop-point 3</span>
+            <span class="hp-dist">0.5 km</span>
+          </div>
+          <button class="hp-info-btn tappable" onclick="event.stopPropagation(); openHpInfo(2)">
+            <img src="assets/icons/info-circle.svg" alt="" width="12" height="12">
+          </button>
+        </div>
+
+        <div class="dropoff-item tappable" data-hp="3" onclick="selectHoppoint(3)">
+          <div class="hp-icon">
+            <div class="hp-pin-wrap">
+              <img src="assets/icons/hop-point-list.svg" alt="" class="hp-pin-img">
+              <span class="hp-letter">C</span>
+            </div>
+          </div>
+          <div class="hp-info">
+            <span class="hp-name">Phrom Phong BTS Exit 4</span>
+            <span class="hp-dist">0.2 km</span>
+          </div>
+          <button class="hp-info-btn tappable" onclick="event.stopPropagation(); openHpInfo(3)">
+            <img src="assets/icons/info-circle.svg" alt="" width="12" height="12">
+          </button>
+        </div>
+
+        <div class="dropoff-item tappable" data-hp="4" onclick="selectHoppoint(4)">
+          <div class="hp-icon">
+            <div class="hp-pin-wrap">
+              <img src="assets/icons/hop-point-list.svg" alt="" class="hp-pin-img">
+              <span class="hp-letter">D</span>
+            </div>
+          </div>
+          <div class="hp-info">
+            <span class="hp-name">EmQuartier Hop-point</span>
+            <span class="hp-dist">1.2 km</span>
+          </div>
+          <button class="hp-info-btn tappable" onclick="event.stopPropagation(); openHpInfo(4)">
+            <img src="assets/icons/info-circle.svg" alt="" width="12" height="12">
+          </button>
+        </div>
+
+        <div class="dropoff-item tappable" data-hp="5" onclick="selectHoppoint(5)">
+          <div class="hp-icon">
+            <div class="hp-pin-wrap">
+              <img src="assets/icons/hop-point-list.svg" alt="" class="hp-pin-img">
+              <span class="hp-letter">E</span>
+            </div>
+          </div>
+          <div class="hp-info">
+            <span class="hp-name">Sukhumvit Soi 39 · Hop-point 7</span>
+            <span class="hp-dist">1.8 km</span>
+          </div>
+          <button class="hp-info-btn tappable" onclick="event.stopPropagation(); openHpInfo(5)">
+            <img src="assets/icons/info-circle.svg" alt="" width="12" height="12">
+          </button>
+        </div>
+
+      </div><!-- /sheet-list -->
+
+      <!-- Footer: CTA + home indicator -->
+      <div class="sheet-footer">
+        <div class="dropoff-cta-wrap">
+          <button class="dropoff-cta-btn tappable" data-id="ctaBtn" onclick="openHpInfo(selectedHp)">
+            Choose This Drop-off
+          </button>
+        </div>
+        <div class="home-indicator">
+          <div class="home-indicator-bar"></div>
+        </div>
+      </div>
+
+    </div><!-- /dropoff-sheet -->
+
+  </div><!-- /phone -->
+
+  <!-- ===== HOP-POINT INFO DIALOG ===== -->
+  <div id="hpInfoDialog" class="hp-info-dialog hidden">
+    <!-- Backdrop -->
+    <div class="hp-info-backdrop" onclick="closeHpInfo()"></div>
+
+    <!-- Content -->
+    <div class="hp-info-wrap">
+
+      <!-- Promo banner — FIRST in DOM (painted behind the card) -->
+      <div class="hp-banner-wrap" id="hpBannerWrap">
+        <div class="hp-banner">
+          <img class="hp-banner-bg-graphic" src="" alt="" style="display:none">
+          <div class="hp-ell-left"></div>
+          <div class="hp-ell-right"></div>
+          <div class="hp-sparkle hp-sp1"></div>
+          <div class="hp-sparkle hp-sp2"></div>
+          <div class="hp-sparkle hp-sp3"></div>
+          <div class="hp-sparkle hp-sp4"></div>
+          <div class="hp-banner-content">
+            <img src="assets/icons/discount.svg" class="hp-banner-icon" alt="">
+            <div class="hp-text-clip">
+              <div class="hp-banner-text" id="hpBannerText">
+                Use <b>"OFF15"</b> for hop point discount
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- White card (second in DOM = painted in front of banner) -->
+      <div class="hp-info-card">
+
+        <!-- Header: pin + name + close -->
+        <div class="hp-card-header">
+          <div class="hp-card-pin-wrap">
+            <img src="assets/icons/hop-point-list.svg" alt="" width="14" height="19">
+            <span id="hpInfoPinLetter" class="hp-card-pin-letter">A</span>
+          </div>
+          <span class="hp-card-name" id="hpInfoName">Hop-point</span>
+          <button class="hp-card-close tappable" onclick="closeHpInfo()">
+            <img src="assets/icons/x-close.svg" alt="Close" width="20" height="20">
+          </button>
+        </div>
+
+        <!-- Scrollable content: hours + photos + info -->
+        <div class="hp-card-scroll">
+
+          <!-- Opening hours pill + Save -->
+          <div class="hp-hours-row">
+            <button class="hp-hours-pill tappable">
+              <img src="assets/icons/clock.svg" alt="" width="10" height="10">
+              <span>Opening Hours</span>
+              <img src="assets/icons/chevron-down-sm.svg" alt="" width="8" height="4" style="transform:rotate(180deg)">
+            </button>
+            <button class="hp-save-btn tappable" id="hpSaveBtn" onclick="SaveFavorite.onSaveClick(this.dataset.hpName)" data-hp-name="">
+              <img src="assets/icons/bookmark-outline.svg" alt="" width="10" height="10">
+              <span>Save</span>
+            </button>
+          </div>
+
+          <!-- Photo carousel (horizontal scroll) -->
+          <div class="hp-photos-outer">
+            <div class="hp-photos-track" id="hpPhotosTrack" data-drag="horizontal"></div>
+          </div>
+
+          <!-- Info section: type + description + distance -->
+          <div class="hp-info-section">
+            <span class="hp-type-badge" id="hpInfoType">Mall</span>
+            <p class="hp-info-desc" id="hpInfoDesc"></p>
+            <p class="hp-info-dist" id="hpInfoDist"></p>
+          </div>
+
+        </div><!-- /hp-card-scroll -->
+
+        <!-- Footer CTA -->
+        <div class="hp-card-footer">
+          <button class="hp-cta-outline tappable" onclick="chooseFromDialog()">Choose This Drop-off</button>
+        </div>
+
+      </div><!-- /hp-info-card -->
+
+    </div><!-- /hp-info-wrap -->
+  </div><!-- /hpInfoDialog -->
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/area-config.js"></script>
+  <script src="pages/dropoff/dropoff.js"></script>
+  <script src="js/hoppoint-banner.js"></script>
+
+  <!-- Proto Console -->
+  <script>window.CONSOLE_PAGE = 'select-dropoff';</script>
+  <script src="js/save-favorite.js"></script>
+  <script src="proto-console.js"></script>
+
+  <!-- Comment overlay -->
+  <div id="c-overlay" class="hidden"
+    style="position:fixed;top:0;left:0;right:0;bottom:0;z-index:99998;cursor:crosshair;"
+    onclick="handleCommentClick(event)"></div>
+
+  <!-- Console FAB -->
+  <button id="c-fab" onclick="toggleConsole()" style="z-index:99999;">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/>
+    </svg>
+    <span class="c-label">Console</span>
+  </button>
+
+  <!-- Console Panel -->
+  <div id="c-panel" class="hidden" style="background:#1A1A2E;z-index:99999;">
+
+    <div style="padding:10px 16px;border-bottom:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:space-between;">
+      <span style="font-size:11px;font-weight:700;letter-spacing:0.6px;color:rgba(255,255,255,0.4);text-transform:uppercase;">Prototype Console</span>
+      <button onclick="toggleConsole()" style="background:none;border:none;color:rgba(255,255,255,0.35);cursor:pointer;font-size:15px;line-height:1;padding:0;">&#x2715;</button>
+    </div>
+
+    <div style="padding:12px 16px;border-bottom:1px solid rgba(255,255,255,0.08);">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+        <span style="font-size:11px;font-weight:700;letter-spacing:0.5px;color:rgba(255,255,255,0.4);text-transform:uppercase;">Comment</span>
+        <span id="c-comment-count" class="hidden" style="font-size:10px;font-weight:800;background:#FBBF24;color:#000;border-radius:99px;padding:1px 7px;">0</span>
+      </div>
+      <button id="c-comment-btn" onclick="toggleCommentMode()"
+        style="width:100%;display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.08);border:none;border-radius:10px;padding:9px 12px;color:#fff;cursor:pointer;font-family:inherit;transition:background 0.15s;">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+        </svg>
+        <span style="font-size:13px;font-weight:600;">Pin a comment</span>
+      </button>
+      <div id="c-comments-list" style="margin-top:6px;max-height:140px;overflow-y:auto;"></div>
+    </div>
+
+    <div style="padding:12px 16px;border-bottom:1px solid rgba(255,255,255,0.08);">
+      <div style="font-size:11px;font-weight:700;letter-spacing:0.5px;color:rgba(255,255,255,0.4);text-transform:uppercase;margin-bottom:8px;">State</div>
+      <button onclick="consoleReset()"
+        style="width:100%;display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.08);border:none;border-radius:10px;padding:9px 12px;color:#fff;cursor:pointer;font-family:inherit;">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4.49"/>
+        </svg>
+        <span style="font-size:13px;font-weight:600;">Reset (→ Hop-point A)</span>
+      </button>
+    </div>
+
+    <div style="padding:12px 16px;border-bottom:1px solid rgba(255,255,255,0.08);">
+      <div style="font-size:11px;font-weight:700;letter-spacing:0.5px;color:rgba(255,255,255,0.4);text-transform:uppercase;margin-bottom:8px;">Pages</div>
+      <div style="display:flex;flex-direction:column;gap:4px;">
+        <a href="index.html" style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.08);border-radius:10px;padding:8px 12px;color:#fff;text-decoration:none;font-size:13px;font-weight:600;">Home</a>
+        <a href="search.html" style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.08);border-radius:10px;padding:8px 12px;color:#fff;text-decoration:none;font-size:13px;font-weight:600;">Search</a>
+        <a href="select-dropoff.html" style="display:flex;align-items:center;gap:8px;background:rgba(251,191,36,0.15);border:1px solid rgba(251,191,36,0.25);border-radius:10px;padding:8px 12px;color:#FCD34D;text-decoration:none;font-size:13px;font-weight:600;">
+          Nearby Dropoff <span style="margin-left:auto;font-size:10px;opacity:0.5;">current</span>
+        </a>
+        <a href="select-pickup.html" style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.08);border-radius:10px;padding:8px 12px;color:#fff;text-decoration:none;font-size:13px;font-weight:600;">Nearby Pickup</a>
+        <a href="request.html" style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.08);border-radius:10px;padding:8px 12px;color:#fff;text-decoration:none;font-size:13px;font-weight:600;">Request</a>
+        <a href="saved-places.html" style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.08);border-radius:10px;padding:8px 12px;color:#fff;text-decoration:none;font-size:13px;font-weight:600;">Saved Places</a>
+      </div>
+    </div>
+
+    <div style="padding:12px 16px;">
+      <div style="font-size:11px;font-weight:700;letter-spacing:0.5px;color:rgba(255,255,255,0.4);text-transform:uppercase;margin-bottom:8px;">Scenarios</div>
+      <div style="display:flex;flex-direction:column;gap:4px;">
+        <button onclick="runScenario(1)" style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.08);border:none;border-radius:10px;padding:8px 12px;color:#fff;cursor:pointer;font-size:13px;font-weight:600;font-family:inherit;text-align:left;">
+          <span style="color:rgba(255,255,255,0.35);font-size:11px;">&#x25B6;</span> Select Hop-point A
+        </button>
+        <button onclick="runScenario(2)" style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.08);border:none;border-radius:10px;padding:8px 12px;color:#fff;cursor:pointer;font-size:13px;font-weight:600;font-family:inherit;text-align:left;">
+          <span style="color:rgba(255,255,255,0.35);font-size:11px;">&#x25B6;</span> Select Hop-point B
+        </button>
+        <button onclick="runScenario(3)" style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.08);border:none;border-radius:10px;padding:8px 12px;color:#fff;cursor:pointer;font-size:13px;font-weight:600;font-family:inherit;text-align:left;">
+          <span style="color:rgba(255,255,255,0.35);font-size:11px;">&#x25B6;</span> Select Hop-point C
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    if ('serviceWorker' in navigator)
+      navigator.serviceWorker.getRegistrations().then(regs => regs.forEach(r => r.unregister()));
+  </script>
+</body>
+</html>

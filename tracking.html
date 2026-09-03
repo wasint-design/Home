@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Muvmi — Waiting for Ride</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="css/global.css">
+  <style>
+    .phone {
+      display: flex;
+      flex-direction: column;
+    }
+    .tracking-screen {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #F0F2F5;
+      padding: 16px;
+      text-align: center;
+    }
+    .tracking-placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+    .tracking-placeholder img {
+      width: 100%;
+      max-width: 361px;
+      border-radius: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .tracking-label {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--color-text-muted);
+      font-family: var(--font-family);
+    }
+    .tracking-success {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      padding: 24px;
+      background: white;
+      border-radius: 16px;
+      width: 100%;
+    }
+    .tracking-success-icon {
+      width: 48px;
+      height: 48px;
+      background: var(--color-positive);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      color: white;
+    }
+    .tracking-success-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--color-primary);
+      font-family: var(--font-family);
+    }
+    .tracking-success-desc {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--color-text-muted);
+      font-family: var(--font-family);
+      line-height: 22px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="phone">
+    <div class="tracking-screen">
+      <div class="tracking-placeholder">
+        <div class="tracking-success">
+          <div class="tracking-success-icon">✓</div>
+          <span class="tracking-success-title">Ride Requested!</span>
+          <span class="tracking-success-desc">Your driver is on the way<br>Estimated arrival: 11-13 mins</span>
+        </div>
+        <span class="tracking-label">This is a static prototype screen — end of requesting flow</span>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/utils.js"></script>
+  <script src="js/app.js"></script>
+
+  <!-- Proto Console -->
+  <script>window.CONSOLE_PAGE = 'tracking';</script>
+  <script src="proto-console.js"></script>
+
+  <!-- Console FAB -->
+  <button id="c-fab" onclick="toggleConsole()" style="z-index:99999;">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/>
+    </svg>
+    <span class="c-label">Console</span>
+  </button>
+
+  <!-- Console Panel -->
+  <div id="c-panel" class="hidden" style="background:#1A1A2E;z-index:99999;">
+    <div style="padding:10px 16px;border-bottom:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:space-between;">
+      <span style="font-size:11px;font-weight:700;letter-spacing:0.6px;color:rgba(255,255,255,0.4);text-transform:uppercase;">Prototype Console</span>
+      <button onclick="toggleConsole()" style="background:none;border:none;color:rgba(255,255,255,0.35);cursor:pointer;font-size:15px;line-height:1;padding:0;">&#x2715;</button>
+    </div>
+    <div style="padding:12px 16px;">
+      <div style="font-size:11px;font-weight:700;letter-spacing:0.5px;color:rgba(255,255,255,0.4);text-transform:uppercase;margin-bottom:8px;">Pages</div>
+      <div style="display:flex;flex-direction:column;gap:4px;">
+        <a href="index.html" style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.08);border-radius:10px;padding:8px 12px;color:#fff;text-decoration:none;font-size:13px;font-weight:600;">Home</a>
+        <a href="request.html" style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.08);border-radius:10px;padding:8px 12px;color:#fff;text-decoration:none;font-size:13px;font-weight:600;">Request</a>
+        <a href="tracking.html" style="display:flex;align-items:center;gap:8px;background:rgba(251,191,36,0.15);border:1px solid rgba(251,191,36,0.25);border-radius:10px;padding:8px 12px;color:#FCD34D;text-decoration:none;font-size:13px;font-weight:600;">
+          Tracking <span style="margin-left:auto;font-size:10px;opacity:0.5;">current</span>
+        </a>
+        <a href="saved-places.html" style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.08);border-radius:10px;padding:8px 12px;color:#fff;text-decoration:none;font-size:13px;font-weight:600;">Saved Places</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    if ('serviceWorker' in navigator)
+      navigator.serviceWorker.getRegistrations().then(regs => regs.forEach(r => r.unregister()));
+  </script>
+</body>
+</html>

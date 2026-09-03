@@ -1,0 +1,453 @@
+/* ========================================
+   Request (Trip Details) — Styles
+   ======================================== */
+
+/* ===== BOTTOM SHEET ===== */
+.request-sheet {
+  flex-shrink: 0;
+}
+
+/* Override banner height for this page (90px vs 74px on service-selection) */
+.request-sheet .service-banner {
+  height: 90px;
+}
+
+/* White card — overlaps banner by 43px (banner 90px, card top 47px) */
+.request-card {
+  background: white;
+  border-radius: 24px 24px 0 0;
+  margin-top: -43px;
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  padding: 0 8px;
+}
+
+/* ===== SELECTED SERVICE ROW ===== */
+.req-service-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 16px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #E7EEFC;
+}
+
+/* Right side of service row */
+.req-service-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.req-service-name-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.req-service-name-group {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.req-service-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-primary);
+  font-family: var(--font-family);
+  line-height: 24px;
+  letter-spacing: 0.25px;
+}
+
+.req-eta {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-text-dark);  /* #4F4F4F — NOT muted */
+  font-family: var(--font-family);
+  line-height: 18px;
+  letter-spacing: 0.25px;
+  white-space: nowrap;
+}
+
+.req-service-desc {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  font-family: var(--font-family);
+  line-height: 18px;
+  letter-spacing: 0.25px;
+  margin: 0;
+}
+
+/* ===== OPTIONS SECTION (Passengers + Private car) ===== */
+.req-options {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px 8px 16px;
+}
+
+.req-option-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0;
+  gap: 4px;
+  border-radius: 12px;
+}
+
+.req-option-label-wrap {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.req-option-label {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-text-dark);
+  font-family: var(--font-family);
+  line-height: 24px;
+  letter-spacing: 0.25px;
+}
+
+/* ===== PASSENGERS NUMBER PICKER ===== */
+.req-picker-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 117px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.req-picker-circle-btn {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: block;
+}
+
+.req-picker-circle-btn:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.req-picker-circle-btn img {
+  width: 24px;
+  height: 24px;
+  display: block;
+}
+
+.req-picker-val {
+  flex: 1;
+  height: 24px;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--color-primary);
+  font-family: var(--font-family);
+  line-height: 30px;
+  letter-spacing: 0.25px;
+  background: none;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 16px;
+}
+
+/* Passengers dropdown popup */
+.req-pax-dropdown {
+  /* Portaled to .phone at runtime — position: absolute relative to .phone */
+  position: absolute;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  width: 53px;
+  z-index: 50;  /* above footer (21) + price panel (20) within .phone stacking context */
+}
+
+.req-pax-dropdown.hidden {
+  display: none;
+}
+
+.req-pax-option {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 16px;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--color-primary);
+  font-family: var(--font-family);
+  line-height: 30px;
+  letter-spacing: 0.25px;
+  cursor: pointer;
+  border-radius: 12px;
+}
+
+.req-pax-option:active {
+  background: var(--color-primary-light);
+}
+
+.req-pax-option.selected {
+  background: var(--color-primary-light);
+}
+
+/* ===== PRIVATE CAR CHECKBOX ===== */
+.req-checkbox {
+  width: 24px;
+  height: 24px;
+  border: 2px solid #909090;
+  border-radius: 6px;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: border-color 0.15s, background 0.15s;
+  padding: 0;
+}
+
+.req-checkbox.checked {
+  border-color: var(--color-primary);
+  background: var(--color-primary);
+}
+
+.req-checkbox-inner {
+  width: 14px;
+  height: 11px;
+  display: block;
+  background: transparent;
+}
+
+.req-checkbox.checked .req-checkbox-inner {
+  background: url("data:image/svg+xml,%3Csvg width='14' height='11' viewBox='0 0 14 11' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1.5 5.5L5.5 9.5L12.5 1.5' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat;
+}
+
+/* ===== DARK OVERLAY (covers map + sheet when price info is open) ===== */
+.req-price-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  z-index: 19;
+}
+
+.req-price-overlay.hidden {
+  display: none;
+}
+
+/* ===== PAYMENT FOOTER ===== */
+.request-footer {
+  flex-shrink: 0;
+  background: white;
+  position: relative;
+  z-index: 21;  /* above overlay (19) so footer always shows on top */
+}
+
+/* Price Summary panel — sibling of footer inside .phone
+   bottom is set by JS to equal footer.offsetHeight so it anchors right above the footer.
+   z-index 20: above overlay (19), below footer (21) so footer always paints over the
+   panel when closed (panel slides down behind the footer visually). */
+.req-price-panel {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;          /* JS overrides this on open */
+  z-index: 20;
+  background: white;
+  border-radius: 16px 16px 0 0;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.12);
+  transform: translateY(100%);
+  transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  padding: 32px 16px 16px;
+}
+
+.req-price-panel.open {
+  transform: translateY(0);
+}
+
+.req-price-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-primary);
+  font-family: var(--font-family);
+  line-height: 24px;
+  letter-spacing: 0.25px;
+  margin-bottom: 8px;
+}
+
+.req-price-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 0 16px 16px;
+}
+
+.req-price-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.req-price-label {
+  flex: 1;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  font-family: var(--font-family);
+  line-height: 22px;
+  letter-spacing: 0.25px;
+}
+
+.req-price-value {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text-dark);
+  font-family: var(--font-family);
+  line-height: 22px;
+  letter-spacing: 0.25px;
+}
+
+.req-price-discount {
+  color: var(--color-negative);
+}
+
+/* Payment bottom card (wallet/promo/amount row) */
+.req-payment-card {
+  background: white;
+  box-shadow: 0 -2px 2px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px 16px 8px;
+}
+
+/* Payment method row */
+.req-payment-method-row {
+  display: flex;
+  align-items: center;
+}
+
+.req-payment-half {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  padding: 0 8px;
+}
+
+.req-payment-half-right {
+  justify-content: center;
+  padding: 0;
+}
+
+.req-payment-label-text {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text-dark);
+  font-family: var(--font-family);
+  line-height: 22px;
+  letter-spacing: 0.25px;
+}
+
+.req-payment-method-divider {
+  width: 1px;
+  height: 32px;
+  background: #EEE;
+  flex-shrink: 0;
+  margin: 0 8px;
+}
+
+.req-chevron-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: auto;
+}
+
+/* Payment amount row */
+.req-payment-amount-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.req-payment-total-label {
+  flex: 1;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-text-dark);
+  font-family: var(--font-family);
+  line-height: 24px;
+  letter-spacing: 0.25px;
+}
+
+.req-payment-badge {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: #E7EEFC;
+  border-radius: 4px;
+  padding: 0 8px;
+  height: 26px;
+}
+
+.req-badge-old {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  font-family: var(--font-family);
+  line-height: 24px;
+  letter-spacing: 0.25px;
+  text-decoration: line-through;
+}
+
+.req-badge-new {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-primary);
+  font-family: var(--font-family);
+  line-height: 24px;
+  letter-spacing: 0.25px;
+}
+
+/* CTA section */
+.req-cta-section {
+  background: white;
+  padding: 16px;
+}
+
+.req-cta-btn {
+  width: 100%;
+  padding: 8px 16px;
+  background: var(--color-primary);
+  border: none;
+  border-radius: 24px;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 28px;
+  color: white;
+  cursor: pointer;
+  font-family: var(--font-family);
+  letter-spacing: 0.25px;
+}
+
+.req-cta-btn:active {
+  opacity: 0.88;
+}

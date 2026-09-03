@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Muvmi — Request</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="pages/service/service.css">
+  <link rel="stylesheet" href="pages/request/request.css">
+</head>
+<body>
+
+  <div class="phone">
+
+    <!-- ===== MAP SECTION ===== -->
+    <div class="service-map" id="requestMap">
+
+      <!-- Leaflet map -->
+      <div id="mapLeaflet"></div>
+
+      <!-- Status bar -->
+      <div class="status-bar">
+        <span class="status-bar-time">9:41</span>
+        <div class="status-bar-icons">
+          <img src="assets/icons/signal.svg" alt="" width="16" height="16">
+          <img src="assets/icons/wifi.svg" alt="" width="16" height="16">
+          <img src="assets/icons/battery.svg" alt="" width="18" height="18">
+        </div>
+      </div>
+
+      <!-- Header: back + pickup pill + spacer (no swap on request page) -->
+      <div class="service-header">
+
+        <div class="service-header-row">
+          <button class="map-back-btn tappable" onclick="history.back()">
+            <img src="assets/icons/back-btn.svg" alt="Back" width="32" height="32">
+          </button>
+          <div class="service-pickup-pill">
+            <img src="assets/icons/location-pin-input.svg" alt="" width="16" height="16" style="flex-shrink:0" id="requestPickupIcon">
+            <span class="service-pill-text" id="requestPickupText" data-id="requestPickupText">Emquatiers main entrance</span>
+          </div>
+          <div style="width:32px;flex-shrink:0;"></div>
+        </div>
+
+        <div class="service-header-row2" style="padding-right:40px;">
+          <div class="service-dest-pill" style="flex:1;">
+            <span class="service-pill-text" id="requestDestText" data-id="requestDestText">Destination</span>
+          </div>
+        </div>
+
+      </div>
+
+    </div><!-- /service-map -->
+
+    <!-- ===== BOTTOM SHEET ===== -->
+    <div class="request-sheet">
+
+      <!-- Yellow promo banner -->
+      <div class="service-banner">
+        <div class="service-banner-ell-left"></div>
+        <div class="service-banner-ell-right"></div>
+        <img src="assets/icons/discount.svg" alt="" class="service-banner-icon">
+        <span class="service-banner-text" data-id="bannerText">Discount 30% for new user, Use code New2026</span>
+      </div>
+
+      <!-- White card (overlaps banner) -->
+      <div class="request-card">
+
+        <!-- Drag handle -->
+        <div class="service-drag-wrap">
+          <div class="service-drag-bar"></div>
+        </div>
+
+        <!-- Selected service row -->
+        <div class="req-service-row">
+          <!-- Tuk tuk icon 24×24 -->
+          <div style="width:24px;height:24px;flex-shrink:0;display:flex;align-items:center;justify-content:center;">
+            <img src="assets/icons/service-saver.svg" alt="" id="reqServiceIconImg" width="21" height="16">
+          </div>
+          <!-- Info -->
+          <div class="req-service-info">
+            <div class="req-service-name-row">
+              <div class="req-service-name-group">
+                <span class="req-service-name" id="reqServiceName" data-id="reqServiceName">Saver</span>
+                <button class="service-info-btn tappable" onclick="event.stopPropagation()">
+                  <img src="assets/icons/info-circle.svg" alt="" width="12" height="12">
+                </button>
+              </div>
+              <span class="req-eta" id="reqEta" data-id="reqEta">~10-15 mins away</span>
+            </div>
+            <p class="req-service-desc" id="reqDesc" data-id="reqDesc">Ride sharing, saver with longer time</p>
+          </div>
+        </div>
+
+        <!-- Options: Passengers + Private car -->
+        <div class="req-options">
+
+          <!-- Passengers row -->
+          <div class="req-option-row">
+            <div class="req-option-label-wrap">
+              <span class="req-option-label">Passengers</span>
+              <button class="service-info-btn tappable" onclick="event.stopPropagation()">
+                <img src="assets/icons/info-circle.svg" alt="" width="12" height="12">
+              </button>
+            </div>
+            <div class="req-picker-wrap">
+              <button class="req-picker-circle-btn tappable" id="paxMinus" onclick="changePax(-1)">
+                <img src="assets/icons/dash-circle-fill.svg" alt="−" width="24" height="24">
+              </button>
+              <button class="req-picker-val tappable" id="paxValue" onclick="togglePaxDropdown()">1</button>
+              <button class="req-picker-circle-btn tappable" id="paxPlus" onclick="changePax(1)">
+                <img src="assets/icons/plus-circle-fill.svg" alt="+" width="24" height="24">
+              </button>
+              <!-- Dropdown popup -->
+              <div class="req-pax-dropdown hidden" id="paxDropdown"></div>
+            </div>
+          </div>
+
+          <!-- Private car row -->
+          <div class="req-option-row">
+            <span class="req-option-label">Private car</span>
+            <button class="req-checkbox tappable" id="privateCarCheckbox" onclick="togglePrivateCar()">
+              <span class="req-checkbox-inner" id="privateCarInner"></span>
+            </button>
+          </div>
+
+        </div><!-- /req-options -->
+
+      </div><!-- /request-card -->
+    </div><!-- /request-sheet -->
+
+    <!-- Price Summary panel (sibling of footer, slides above it — z-index 20) -->
+    <div class="req-price-panel" id="reqPricePanel">
+      <p class="req-price-title">Price Summary</p>
+      <div class="req-price-list">
+        <div class="req-price-row">
+          <span class="req-price-label">Ride fee</span>
+          <span class="req-price-value" id="reqRideFee" data-id="reqRideFee">฿25</span>
+        </div>
+        <div class="req-price-row">
+          <span class="req-price-label">Application fee</span>
+          <span class="req-price-value">฿10</span>
+        </div>
+        <div class="req-price-row" id="reqDiscountRow">
+          <span class="req-price-label">New User discount</span>
+          <span class="req-price-value req-price-discount" id="reqDiscountAmt">- ฿15</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== PAYMENT FOOTER ===== -->
+    <div class="request-footer">
+
+      <!-- Payment bottom card -->
+      <div class="req-payment-card">
+
+        <!-- Wallet / Promo row -->
+        <div class="req-payment-method-row">
+          <!-- Left: My Wallet -->
+          <div class="req-payment-half">
+            <img src="assets/icons/wallet.svg" alt="" width="16" height="16" style="flex-shrink:0">
+            <span class="req-payment-label-text">My Wallet</span>
+            <div class="req-chevron-wrap">
+              <img src="assets/icons/chevron-right.svg" alt="" width="5" height="10">
+            </div>
+          </div>
+          <!-- Divider -->
+          <div class="req-payment-method-divider"></div>
+          <!-- Right: Promo Code -->
+          <div class="req-payment-half req-payment-half-right">
+            <img src="assets/icons/voucher-muvmi.svg" alt="" width="15" height="15" style="flex-shrink:0;transform:rotate(-45deg)">
+            <span class="req-payment-label-text">Promo Code</span>
+          </div>
+        </div>
+
+        <!-- Payment amount row -->
+        <div class="req-payment-amount-row">
+          <span class="req-payment-total-label">Payment</span>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <div class="req-payment-badge">
+              <span class="req-badge-old" id="reqBadgeOld">฿35</span>
+              <span class="req-badge-new" id="reqBadgeNew" data-id="reqBadgeNew">฿10</span>
+            </div>
+            <button class="service-info-btn tappable" onclick="togglePriceInfo()">
+              <img src="assets/icons/info-circle.svg" alt="" width="12" height="12">
+            </button>
+          </div>
+        </div>
+
+      </div><!-- /req-payment-card -->
+
+      <!-- CTA -->
+      <div class="req-cta-section">
+        <button class="req-cta-btn tappable" id="reqCtaBtn" data-id="reqCtaBtn" onclick="submitRequest()">
+          Request Tuk Tuk
+        </button>
+      </div>
+
+      <!-- Home indicator -->
+      <div class="home-indicator">
+        <div class="home-indicator-bar"></div>
+      </div>
+
+    </div><!-- /request-footer -->
+
+    <!-- DARK OVERLAY (covers map + sheet when price info is open) -->
+    <div class="req-price-overlay hidden" id="reqPriceOverlay" onclick="closePriceInfo()"></div>
+
+  </div><!-- /phone -->
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+  <script src="pages/request/request.js"></script>
+
+  <!-- Proto Console -->
+  <script>window.CONSOLE_PAGE = 'request';</script>
+  <script src="proto-console.js"></script>
+
+  <!-- Comment overlay -->
+  <div id="c-overlay" class="hidden"
+    style="position:fixed;top:0;left:0;right:0;bottom:0;z-index:99998;cursor:crosshair;"
+    onclick="handleCommentClick(event)"></div>
+
+  <!-- Console FAB -->
+  <button id="c-fab" onclick="toggleConsole()" style="z-index:99999;">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/>
+    </svg>
+    <span class="c-label">Console</span>
+  </button>
+
+  <!-- Console Panel -->
+  <div id="c-panel" class="hidden" style="background:#1A1A2E;z-index:99999;">
+
+    <div style="padding:10px 16px;border-bottom:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:space-between;">
+      <span style="font-size:11px;font-weight:700;letter-spacing:0.6px;color:rgba(255,255,255,0.4);text-transform:uppercase;">Prototype Console</span>
+      <button onclick="toggleConsole()" style="background:none;border:none;color:rgba(255,255,255,0.35);cursor:pointer;font-size:15px;line-height:1;padding:0;">&#x2715;</button>
+    </div>
+
+    <div style="padding:12px 16px;border-bottom:1px solid rgba(255,255,255,0.08);">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+        <span style="font-size:11px;font-weight:700;letter-spacing:0.5px;color:rgba(255,255,255,0.4);text-transform:uppercase;">Comment</span>
+        <span id="c-comment-count" class="hidden" style="font-size:10px;font-weight:800;background:#FBBF24;color:#000;border-radius:99px;padding:1px 7px;">0</span>
+      </div>
+      <button id="c-comment-btn" onclick="toggleCommentMode()"
+        style="width:100%;display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.08);border:none;border-radius:10px;padding:9px 12px;color:#fff;cursor:pointer;font-family:inherit;transition:background 0.15s;">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+        </svg>
+        <span style="font-size:13px;font-weight:600;">Pin a comment</span>
+      </button>
+      <div id="c-comments-list" style="margin-top:6px;max-height:140px;overflow-y:auto;"></div>
+    </div>
+
+    <div style="padding:12px 16px;border-bottom:1px solid rgba(255,255,255,0.08);">
+      <div style="font-size:11px;font-weight:700;letter-spacing:0.5px;color:rgba(255,255,255,0.4);text-transform:uppercase;margin-bottom:8px;">State</div>
+      <button onclick="consoleReset()"
+        style="width:100%;display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.08);border:none;border-radius:10px;padding:9px 12px;color:#fff;cursor:pointer;font-family:inherit;">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4.49"/>
+        </svg>
+        <span style="font-size:13px;font-weight:600;">Reset (pax=1, no private)</span>
+      </button>
+    </div>
+
+    <div style="padding:12px 16px;border-bottom:1px solid rgba(255,255,255,0.08);">
+      <div style="font-size:11px;font-weight:700;letter-spacing:0.5px;color:rgba(255,255,255,0.4);text-transform:uppercase;margin-bottom:8px;">Pages</div>
+      <div style="display:flex;flex-direction:column;gap:4px;">
+        <a href="index.html" style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.08);border-radius:10px;padding:8px 12px;color:#fff;text-decoration:none;font-size:13px;font-weight:600;">Home</a>
+        <a href="search.html" style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.08);border-radius:10px;padding:8px 12px;color:#fff;text-decoration:none;font-size:13px;font-weight:600;">Search</a>
+        <a href="select-dropoff.html" style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.08);border-radius:10px;padding:8px 12px;color:#fff;text-decoration:none;font-size:13px;font-weight:600;">Nearby Dropoff</a>
+        <a href="saved-places.html" style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.08);border-radius:10px;padding:8px 12px;color:#fff;text-decoration:none;font-size:13px;font-weight:600;">Saved Places</a>
+        <a href="select-pickup.html" style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.08);border-radius:10px;padding:8px 12px;color:#fff;text-decoration:none;font-size:13px;font-weight:600;">Nearby Pickup</a>
+        <a href="service-selection.html" style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.08);border-radius:10px;padding:8px 12px;color:#fff;text-decoration:none;font-size:13px;font-weight:600;">Service Selection</a>
+        <a href="request.html" style="display:flex;align-items:center;gap:8px;background:rgba(251,191,36,0.15);border:1px solid rgba(251,191,36,0.25);border-radius:10px;padding:8px 12px;color:#FCD34D;text-decoration:none;font-size:13px;font-weight:600;">
+          Request <span style="margin-left:auto;font-size:10px;opacity:0.5;">current</span>
+        </a>
+      </div>
+    </div>
+
+    <div style="padding:12px 16px;">
+      <div style="font-size:11px;font-weight:700;letter-spacing:0.5px;color:rgba(255,255,255,0.4);text-transform:uppercase;margin-bottom:8px;">Scenarios</div>
+      <div style="display:flex;flex-direction:column;gap:4px;">
+        <button onclick="selectPax(1)" style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.08);border:none;border-radius:10px;padding:8px 12px;color:#fff;cursor:pointer;font-size:13px;font-weight:600;font-family:inherit;text-align:left;">
+          <span style="color:rgba(255,255,255,0.35);font-size:11px;">&#x25B6;</span> 1 Passenger
+        </button>
+        <button onclick="selectPax(4)" style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.08);border:none;border-radius:10px;padding:8px 12px;color:#fff;cursor:pointer;font-size:13px;font-weight:600;font-family:inherit;text-align:left;">
+          <span style="color:rgba(255,255,255,0.35);font-size:11px;">&#x25B6;</span> 4 Passengers
+        </button>
+        <button onclick="togglePrivateCar()" style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.08);border:none;border-radius:10px;padding:8px 12px;color:#fff;cursor:pointer;font-size:13px;font-weight:600;font-family:inherit;text-align:left;">
+          <span style="color:rgba(255,255,255,0.35);font-size:11px;">&#x25B6;</span> Toggle Private Car
+        </button>
+        <button onclick="togglePriceInfo()" style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.08);border:none;border-radius:10px;padding:8px 12px;color:#fff;cursor:pointer;font-size:13px;font-weight:600;font-family:inherit;text-align:left;">
+          <span style="color:rgba(255,255,255,0.35);font-size:11px;">&#x25B6;</span> Toggle Price Summary
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    if ('serviceWorker' in navigator)
+      navigator.serviceWorker.getRegistrations().then(regs => regs.forEach(r => r.unregister()));
+  </script>
+</body>
+</html>

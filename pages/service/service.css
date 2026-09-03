@@ -1,0 +1,482 @@
+/* ========================================
+   Service Selection — Styles
+   ======================================== */
+
+/* ===== PHONE LAYOUT ===== */
+.phone {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== MAP SECTION ===== */
+.service-map {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  background: #E8EAF0;
+  isolation: isolate;
+}
+
+#mapLeaflet {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+/* Status bar over map */
+.service-map .status-bar {
+  position: relative;
+  z-index: 6;
+  background: transparent;
+}
+
+/* ===== MAP HEADER: back + pickup pill + swap / destination pill ===== */
+.service-header {
+  position: relative;
+  z-index: 6;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 4px 16px 8px;
+}
+
+.service-header-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Row 2 indented to align under pickup pill */
+.service-header-row2 {
+  padding-left: 40px;  /* 32px back btn + 8px gap */
+  padding-right: 40px; /* matches swap btn space */
+}
+
+.map-back-btn {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: block;
+}
+
+.service-swap-btn {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Pickup pill */
+.service-pickup-pill {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: white;
+  border: 1px solid #E7EEFC;
+  border-radius: 16px;
+  padding: 9px 13px;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.15);
+}
+
+/* Destination pill */
+.service-dest-pill {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: white;
+  border: 1px solid #E7EEFC;
+  border-radius: 16px;
+  padding: 9px 13px;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.15);
+}
+
+.service-pill-text {
+  flex: 1;
+  min-width: 0;
+  font-size: 14px;
+  font-weight: 500;
+  color: #4F4F4F;
+  font-family: var(--font-family);
+  line-height: 22px;
+  letter-spacing: 0.25px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.service-pill-clear {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ===== MAP PIN LABELS (Leaflet DivIcon) ===== */
+.map-hp-label-pin {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.map-hp-label-badge {
+  padding: 1px 8px;
+  border-radius: 16px;
+  font-size: 11.25px;
+  font-weight: 600;
+  font-family: var(--font-family);
+  line-height: 16.87px;
+  letter-spacing: 0.176px;
+  white-space: nowrap;
+}
+
+.map-hp-label-badge.pickup-badge {
+  background: white;
+  border: 1px solid #0D57E2;
+  color: #0D57E2;
+}
+
+.map-hp-label-badge.dropoff-badge {
+  background: #0D57E2;
+  color: white;
+}
+
+.map-lf-pin { position: relative; }
+.map-lf-pin img { display: block; width: 100%; height: 100%; }
+
+.map-lf-letter {
+  position: absolute;
+  font-weight: 700;
+  font-family: var(--font-family);
+  line-height: 1;
+}
+.map-lf-letter.active {
+  top: 2.49px; left: 5.61px;
+  font-size: 9.9px; line-height: 14.85px;
+  letter-spacing: 0.1547px;
+  color: #0D57E2;
+}
+.map-lf-letter.inactive {
+  top: 1.99px; left: 4.49px;
+  font-size: 7.92px; line-height: 11.88px;
+  letter-spacing: 0.1237px;
+  color: #7D9EDC;
+}
+
+/* ===== BOTTOM SHEET ===== */
+.service-sheet {
+  flex-shrink: 0;
+  position: relative;
+  z-index: 10;
+  margin-top: -24px;
+  display: flex;
+  flex-direction: column;
+  height: 44vh; /* default stage; JS overrides to 20/44/62vh */
+  transition: height 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Yellow promo banner — z-index:1 keeps it behind the white card */
+.service-banner {
+  background: #FFC72D;
+  border-radius: 24px 24px 0 0;
+  height: 74px;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-start;
+  padding: 16px 12px 0;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.service-banner-ell-left {
+  position: absolute;
+  left: -24px;
+  top: -31px;
+  width: 112px;
+  height: 76px;
+  border-radius: 50%;
+  background: #FFDC2D;
+  pointer-events: none;
+}
+
+.service-banner-ell-right {
+  position: absolute;
+  left: 216px;
+  top: 4px;
+  width: 112px;
+  height: 76px;
+  border-radius: 50%;
+  background: #FFDC2D;
+  pointer-events: none;
+}
+
+.service-banner-icon {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.service-banner-text {
+  font-size: 14px;
+  font-weight: 600;
+  color: #4F4F4F;
+  font-family: var(--font-family);
+  line-height: 22px;
+  letter-spacing: 0.25px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  position: relative;
+  z-index: 1;
+}
+
+/* White card (overlaps banner by 25px) — z-index:2 renders in front of banner */
+.service-card {
+  background: white;
+  border-radius: 24px 24px 0 0;
+  margin-top: -25px;
+  position: relative;
+  z-index: 2;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Drag handle */
+.service-drag-wrap {
+  display: flex;
+  justify-content: center;
+  padding: 8px 0;
+  flex-shrink: 0;
+}
+
+.service-drag-bar {
+  width: 40px;
+  height: 6px;
+  background: #909090;
+  border-radius: 40px;
+}
+
+/* Scrollable service list */
+.service-list {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-width: none;
+  padding: 0 8px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.service-list::-webkit-scrollbar {
+  display: none;
+}
+
+/* ===== SERVICE ITEM ===== */
+.service-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.15s;
+  border: 1px solid transparent;
+}
+
+.service-item.selected {
+  background: #E7EEFC;
+  border-color: #0D57E2;
+}
+
+.service-icon {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.service-icon img {
+  display: block;
+  /* natural size per icon — set via width/height attrs in HTML */
+}
+
+.service-icon.size-20 {
+  width: 20px;
+  height: 20px;
+  margin-top: 2px;
+}
+
+.service-info {
+  flex: 1;
+  min-width: 0;
+  margin-left: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* Name row: service name + price */
+.service-name-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.service-name-group {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.service-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: #0D57E2;
+  font-family: var(--font-family);
+  line-height: 16px;
+  padding-top: 3px;
+}
+
+.service-info-btn {
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.service-price-group {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.service-price-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: #909090;
+  font-family: var(--font-family);
+  line-height: 18px;
+  letter-spacing: 0.25px;
+}
+
+.service-price {
+  font-size: 16px;
+  font-weight: 600;
+  color: #0D57E2;
+  font-family: var(--font-family);
+  line-height: 24px;
+  letter-spacing: 0.25px;
+}
+
+.service-price-old {
+  font-size: 16px;
+  font-weight: 600;
+  color: #909090;
+  font-family: var(--font-family);
+  line-height: 24px;
+  letter-spacing: 0.25px;
+  text-decoration: line-through;
+}
+
+/* Description */
+.service-desc {
+  font-size: 12px;
+  font-weight: 500;
+  color: #909090;
+  font-family: var(--font-family);
+  line-height: 18px;
+  letter-spacing: 0.25px;
+}
+
+/* ETA / advance notice — always right-aligned per Figma */
+.service-eta {
+  font-size: 12px;
+  font-weight: 500;
+  color: #909090;
+  font-family: var(--font-family);
+  line-height: 18px;
+  letter-spacing: 0.25px;
+  text-align: right;
+  width: 100%;
+}
+
+/* ===== FOOTER CTA ===== */
+.service-footer {
+  flex-shrink: 0;
+  background: white;
+  box-shadow: 0 -2px 2px rgba(0, 0, 0, 0.1);
+}
+
+.service-cta-wrap {
+  padding: 16px;
+}
+
+.service-cta-btn {
+  width: 100%;
+  padding: 8px 16px;
+  background: var(--color-primary);
+  border: none;
+  border-radius: 24px;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 28px;
+  color: white;
+  cursor: pointer;
+  font-family: var(--font-family);
+  letter-spacing: 0.25px;
+}
+
+.service-cta-btn:active {
+  opacity: 0.88;
+}
+
+.home-indicator {
+  height: 21px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 8px;
+}
+
+.home-indicator-bar {
+  width: 144px;
+  height: 5px;
+  background: black;
+  border-radius: 100px;
+}

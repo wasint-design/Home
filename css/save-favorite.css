@@ -1,0 +1,242 @@
+/* ========================================
+   Save Favorite — Shared Component
+   Save button in hp dialog + bottom sheet
+   ======================================== */
+
+/* ===== SAVE BUTTON (inside hp dialog, next to Opening Hours) ===== */
+.hp-save-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  background: white;
+  border: 1px solid var(--color-primary-light);
+  border-radius: 999px;
+  cursor: pointer;
+  font-family: var(--font-family);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-text-dark);
+  line-height: 18px;
+  letter-spacing: 0.25px;
+  white-space: nowrap;
+}
+
+.hp-save-btn img {
+  width: 10px;
+  height: 10px;
+  flex-shrink: 0;
+}
+
+/* Saved state — filled blue */
+.hp-save-btn.saved {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: white;
+}
+
+.hp-save-btn.saved img {
+  filter: brightness(0) invert(1);
+}
+
+/* ===== SAVE BOTTOM SHEET ===== */
+.save-sheet-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.save-sheet-overlay.hidden {
+  display: none;
+}
+
+.save-sheet-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.save-sheet {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 393px;
+  background: white;
+  border-radius: 24px 24px 0 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header: title + close */
+.save-sheet-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+}
+
+.save-sheet-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-primary);
+  font-family: var(--font-family);
+  line-height: 24px;
+  letter-spacing: 0.25px;
+}
+
+.save-sheet-close {
+  width: 20px;
+  height: 20px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Body content */
+.save-sheet-body {
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Hop-point name card */
+.save-sheet-hp-card {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 16px;
+  border: 1px solid var(--color-primary-light);
+  border-radius: 16px;
+}
+
+.save-sheet-hp-icon {
+  position: relative;
+  width: 14px;
+  height: 19px;
+  flex-shrink: 0;
+}
+
+.save-sheet-hp-icon img {
+  width: 100%;
+  height: 100%;
+}
+
+.save-sheet-hp-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text-dark);
+  font-family: var(--font-family);
+  line-height: 22px;
+  letter-spacing: 0.25px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Address name input */
+.save-sheet-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.save-sheet-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text-dark);
+  font-family: var(--font-family);
+  line-height: 22px;
+  letter-spacing: 0.25px;
+}
+
+.save-sheet-input {
+  height: 42px;
+  border: 1px solid #909090;
+  border-radius: 12px;
+  padding: 0 15px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text-dark);
+  font-family: var(--font-family);
+  line-height: 22px;
+  letter-spacing: 0.25px;
+  outline: none;
+}
+
+.save-sheet-input::placeholder {
+  color: var(--color-text-muted);
+}
+
+.save-sheet-input:focus {
+  border-color: var(--color-primary);
+}
+
+/* Label selector */
+.save-sheet-labels {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.save-label-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: var(--color-primary-light);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.save-label-btn.active {
+  background: var(--color-primary);
+}
+
+.save-label-btn img {
+  width: 18px;
+  height: 18px;
+}
+
+.save-label-btn.active img {
+  filter: brightness(0) invert(1);
+}
+
+/* Footer: Save CTA + home indicator */
+.save-sheet-footer {
+  border-top: 1px solid #EEE;
+  margin-top: 24px;
+}
+
+.save-sheet-cta-wrap {
+  padding: 16px;
+}
+
+.save-sheet-cta {
+  width: 100%;
+  padding: 8px 16px;
+  background: var(--color-primary);
+  border: none;
+  border-radius: 24px;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 28px;
+  color: white;
+  cursor: pointer;
+  font-family: var(--font-family);
+  letter-spacing: 0.25px;
+}
+
+.save-sheet-cta:active {
+  opacity: 0.88;
+}

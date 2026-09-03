@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Muvmi — Search</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="pages/search/search.css">
+</head>
+<body>
+
+  <div class="phone">
+    <div class="phone-body">
+
+      <!-- ===== SEARCH HEADER (sticky) ===== -->
+      <div class="search-header" data-section="searchHeader">
+
+        <!-- Status Bar (light) -->
+        <div class="status-bar">
+          <span class="status-bar-time">9:41</span>
+          <div class="status-bar-icons">
+            <img src="assets/icons/signal.svg" alt="" width="16" height="16">
+            <img src="assets/icons/wifi.svg" alt="" width="16" height="16">
+            <img src="assets/icons/battery.svg" alt="" width="18" height="18">
+          </div>
+        </div>
+
+        <!-- Header Content -->
+        <div class="search-header-content">
+
+          <!-- Top Row: Back + Title + Map -->
+          <div class="search-header-top">
+            <div class="search-title-group">
+              <button class="back-btn tappable" onclick="history.back()">
+                <img src="assets/icons/chevron-left.svg" alt="Back" width="24" height="24">
+              </button>
+              <span class="search-page-title" data-id="searchPageTitle">Choose destination</span>
+            </div>
+            <button class="map-chip tappable" onclick="window.location.href='choose-map.html'">
+              <img src="assets/icons/map-chip.svg" alt="" width="16" height="16">
+              <span>Map</span>
+            </button>
+          </div>
+
+          <!-- Inputs Row -->
+          <div class="search-inputs-row">
+
+            <!-- Connector: pickup dot → arrow → destination dot -->
+            <div class="input-connector">
+              <div class="connector-dot connector-dot--pickup"></div>
+              <div class="connector-arrow-wrap">
+                <img src="assets/icons/arrow-up-fill.svg" alt="" class="connector-arrow-img">
+              </div>
+              <div class="connector-dot connector-dot--destination"></div>
+            </div>
+
+            <!-- Fields -->
+            <div class="search-fields">
+
+              <!-- Pickup field + Swap button -->
+              <div class="search-field-pickup-row">
+                <div class="search-field search-field--pickup tappable" data-id="pickupField"
+                     onclick="activatePickup()">
+                  <div class="search-field-left">
+                    <img src="assets/icons/location-pin-input.svg" alt="" width="16" height="16" id="pickupIcon">
+                    <span class="pickup-field-text" data-id="pickupText">Emquatiers main entrance</span>
+                    <input
+                      type="text"
+                      id="pickupInput"
+                      class="destination-input"
+                      placeholder="Enter pickup point"
+                      autocomplete="off"
+                      autocorrect="off"
+                      spellcheck="false"
+                      style="display:none"
+                    >
+                  </div>
+                  <div class="field-clear-btn">
+                    <img src="assets/icons/x-clear-1.svg" alt="">
+                    <img src="assets/icons/x-clear-2.svg" alt="">
+                  </div>
+                </div>
+                <button class="swap-btn tappable" data-id="swapBtn" onclick="swapPickupDest()">
+                  <img src="assets/icons/swap.svg" alt="Swap" width="32" height="32">
+                </button>
+              </div>
+
+              <!-- Destination field -->
+              <div class="search-field search-field--destination" data-id="destinationField">
+                <input
+                  type="text"
+                  id="destinationInput"
+                  class="destination-input"
+                  placeholder="Enter destination"
+                  autocomplete="off"
+                  autocorrect="off"
+                  spellcheck="false"
+                >
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== SCROLLABLE CONTENT ===== -->
+      <div class="scroll-area" id="searchScroll" data-drag="vertical">
+        <div class="search-content">
+
+          <!-- Promo Banner -->
+          <div class="search-promo" data-section="promoBanner">
+            <img src="assets/images/search-promo-banner.png" alt="Promotion">
+          </div>
+
+          <!-- Recent Section -->
+          <div class="search-section" data-section="recent">
+            <div class="search-section-header">
+              <span class="search-section-title">Recent</span>
+              <button class="see-more-btn tappable">See more</button>
+            </div>
+            <div class="search-results">
+
+              <div class="search-result-item tappable">
+                <div class="result-icon">
+                  <img src="assets/icons/hop-point.svg" alt="" width="10.3" height="13.8">
+                </div>
+                <div class="result-content">
+                  <p class="result-name">33 Space (Back Entrance)</p>
+                  <div class="result-meta">
+                    <span class="result-distance">900 m</span>
+                    <div class="area-badge area-badge--active">
+                      <div class="area-badge-icon">
+                        <img src="assets/icons/map-area-active.svg" class="area-badge-map" alt="">
+                        <img src="assets/icons/hop-point-active.svg" class="area-badge-pin" alt="">
+                      </div>
+                      <span>Sukhumvit</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="search-result-item tappable">
+                <div class="result-icon">
+                  <img src="assets/icons/hop-point.svg" alt="" width="10.3" height="13.8">
+                </div>
+                <div class="result-content">
+                  <p class="result-name">Siam Center</p>
+                  <div class="result-meta">
+                    <span class="result-distance">900 m</span>
+                    <div class="area-badge area-badge--active">
+                      <div class="area-badge-icon">
+                        <img src="assets/icons/map-area-active.svg" class="area-badge-map" alt="">
+                        <img src="assets/icons/hop-point-active.svg" class="area-badge-pin" alt="">
+                      </div>
+                      <span>Sukhumvit</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="search-result-item tappable">
+                <div class="result-icon">
+                  <img src="assets/icons/hop-point.svg" alt="" width="10.3" height="13.8">
+                </div>
+                <div class="result-content">
+                  <p class="result-name">Bus stop at Kasetsart vehicle department (Vibhavadi Road)</p>
+                  <div class="result-meta">
+                    <span class="result-distance">1.2 km</span>
+                    <div class="area-badge area-badge--inactive">
+                      <div class="area-badge-icon">
+                        <img src="assets/icons/map-area-inactive.svg" class="area-badge-map" alt="">
+                        <img src="assets/icons/hop-point-inactive.svg" class="area-badge-pin" alt="">
+                      </div>
+                      <span>Rattanakosin</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="search-result-item tappable">
+                <div class="result-icon">
+                  <img src="assets/icons/hop-point.svg" alt="" width="10.3" height="13.8">
+                </div>
+                <div class="result-content">
+                  <p class="result-name">Bus stop at Kasetsart vehicle department (Vibhavadi Road)</p>
+                  <div class="result-meta">
+                    <span class="result-distance">1.2 km</span>
+                    <div class="area-badge area-badge--inactive">
+                      <div class="area-badge-icon">
+                        <img src="assets/icons/map-area-inactive.svg" class="area-badge-map" alt="">
+                        <img src="assets/icons/hop-point-inactive.svg" class="area-badge-pin" alt="">
+                      </div>
+                      <span>Rattanakosin</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="search-result-item tappable">
+                <div class="result-icon">
+                  <img src="assets/icons/hop-point.svg" alt="" width="10.3" height="13.8">
+                </div>
+                <div class="result-content">
+                  <p class="result-name">Bus stop at Kasetsart vehicle department (Vibhavadi Road)</p>
+                  <div class="result-meta">
+                    <span class="result-distance">1.2 km</span>
+                    <div class="area-badge area-badge--inactive">
+                      <div class="area-badge-icon">
+                        <img src="assets/icons/map-area-inactive.svg" class="area-badge-map" alt="">
+                        <img src="assets/icons/hop-point-inactive.svg" class="area-badge-pin" alt="">
+                      </div>
+                      <span>Rattanakosin</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Search Results (shown when user is typing; place + hop-point mix) -->
+          <div class="search-section" data-section="searchResults" style="display:none">
+            <div class="search-results">
+
+              <!-- ── Place result: Siam Paragon ── -->
+              <div class="search-result-group" data-id="placeGroup-siamParagon">
+
+                <!-- Place header row -->
+                <div class="search-result-item search-result-item--place tappable"
+                     data-id="placeRow-siamParagon"
+                     onclick="navigateToDropoff(this)">
+                  <div class="result-icon result-icon--place">
+                    <img src="assets/icons/place-icon.svg" alt="" width="20" height="20">
+                  </div>
+                  <div class="result-content">
+                    <p class="result-name">Siam Paragon</p>
+                    <div class="result-meta">
+                      <span class="result-distance">1.2 km</span>
+                      <div class="area-badge area-badge--active">
+                        <div class="area-badge-icon">
+                          <img src="assets/icons/map-area-active.svg" class="area-badge-map" alt="">
+                          <img src="assets/icons/hop-point-active.svg" class="area-badge-pin" alt="">
+                        </div>
+                        <span>Sukhumvit</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- First 2 hop-points: always visible -->
+                <div class="search-result-item search-result-item--child tappable"
+>
+                  <div class="result-icon">
+                    <img src="assets/icons/hop-point.svg" alt="" width="10.3" height="13.8">
+                  </div>
+                  <div class="result-content">
+                    <p class="result-name">Siam Paragon (Main Entrance)</p>
+                    <div class="result-meta">
+                      <span class="result-distance">50 m</span>
+                      <div class="area-badge area-badge--active">
+                        <div class="area-badge-icon">
+                          <img src="assets/icons/map-area-active.svg" class="area-badge-map" alt="">
+                          <img src="assets/icons/hop-point-active.svg" class="area-badge-pin" alt="">
+                        </div>
+                        <span>Sukhumvit</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="search-result-item search-result-item--child tappable"
+>
+                  <div class="result-icon">
+                    <img src="assets/icons/hop-point.svg" alt="" width="10.3" height="13.8">
+                  </div>
+                  <div class="result-content">
+                    <p class="result-name">Siam Paragon (Back Gate, Rama I)</p>
+                    <div class="result-meta">
+                      <span class="result-distance">120 m</span>
+                      <div class="area-badge area-badge--active">
+                        <div class="area-badge-icon">
+                          <img src="assets/icons/map-area-active.svg" class="area-badge-map" alt="">
+                          <img src="assets/icons/hop-point-active.svg" class="area-badge-pin" alt="">
+                        </div>
+                        <span>Sukhumvit</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- View more / collapse toggle -->
+                <button class="view-more-btn tappable" data-id="viewMoreBtn-siamParagon"
+                        onclick="togglePlaceHoppoints('siamParagon')">
+                  <span class="view-more-label">View more (3)</span>
+                  <img src="assets/icons/chevron-right.svg" class="view-more-chevron" alt="" width="6" height="11">
+                </button>
+
+                <!-- Additional hop-points: hidden until expanded -->
+                <div class="place-hoppoints" data-id="placeHoppoints-siamParagon">
+
+                  <div class="search-result-item search-result-item--child tappable"
+  >
+                    <div class="result-icon">
+                      <img src="assets/icons/hop-point.svg" alt="" width="10.3" height="13.8">
+                    </div>
+                    <div class="result-content">
+                      <p class="result-name">Siam Paragon (Parking Entrance B)</p>
+                      <div class="result-meta">
+                        <span class="result-distance">200 m</span>
+                        <div class="area-badge area-badge--active">
+                          <div class="area-badge-icon">
+                            <img src="assets/icons/map-area-active.svg" class="area-badge-map" alt="">
+                            <img src="assets/icons/hop-point-active.svg" class="area-badge-pin" alt="">
+                          </div>
+                          <span>Sukhumvit</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="search-result-item search-result-item--child tappable"
+  >
+                    <div class="result-icon">
+                      <img src="assets/icons/hop-point.svg" alt="" width="10.3" height="13.8">
+                    </div>
+                    <div class="result-content">
+                      <p class="result-name">Siam Paragon (Parking Entrance C)</p>
+                      <div class="result-meta">
+                        <span class="result-distance">250 m</span>
+                        <div class="area-badge area-badge--active">
+                          <div class="area-badge-icon">
+                            <img src="assets/icons/map-area-active.svg" class="area-badge-map" alt="">
+                            <img src="assets/icons/hop-point-active.svg" class="area-badge-pin" alt="">
+                          </div>
+                          <span>Sukhumvit</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="search-result-item search-result-item--child tappable"
+  >
+                    <div class="result-icon">
+                      <img src="assets/icons/hop-point.svg" alt="" width="10.3" height="13.8">
+                    </div>
+                    <div class="result-content">
+                      <p class="result-name">Siam Paragon (Parking Entrance D)</p>
+                      <div class="result-meta">
+                        <span class="result-distance">300 m</span>
+                        <div class="area-badge area-badge--active">
+                          <div class="area-badge-icon">
+                            <img src="assets/icons/map-area-active.svg" class="area-badge-map" alt="">
+                            <img src="assets/icons/hop-point-active.svg" class="area-badge-pin" alt="">
+                          </div>
+                          <span>Sukhumvit</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div><!-- /place-hoppoints -->
+
+              </div><!-- /placeGroup-siamParagon -->
+
+              <!-- ── Regular hop-point results ── -->
+              <div class="search-result-item tappable">
+                <div class="result-icon">
+                  <img src="assets/icons/hop-point.svg" alt="" width="10.3" height="13.8">
+                </div>
+                <div class="result-content">
+                  <p class="result-name">Siam Center (Main Entrance)</p>
+                  <div class="result-meta">
+                    <span class="result-distance">250 m</span>
+                    <div class="area-badge area-badge--active">
+                      <div class="area-badge-icon">
+                        <img src="assets/icons/map-area-active.svg" class="area-badge-map" alt="">
+                        <img src="assets/icons/hop-point-active.svg" class="area-badge-pin" alt="">
+                      </div>
+                      <span>Sukhumvit</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="search-result-item tappable">
+                <div class="result-icon">
+                  <img src="assets/icons/hop-point.svg" alt="" width="10.3" height="13.8">
+                </div>
+                <div class="result-content">
+                  <p class="result-name">BTS Siam (Exit 3)</p>
+                  <div class="result-meta">
+                    <span class="result-distance">400 m</span>
+                    <div class="area-badge area-badge--active">
+                      <div class="area-badge-icon">
+                        <img src="assets/icons/map-area-active.svg" class="area-badge-map" alt="">
+                        <img src="assets/icons/hop-point-active.svg" class="area-badge-pin" alt="">
+                      </div>
+                      <span>Sukhumvit</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div><!-- /searchResults -->
+
+          <!-- Nearby Section -->
+          <div class="search-section" data-section="nearby">
+            <div class="search-section-header">
+              <span class="search-section-title">Nearby</span>
+            </div>
+            <div class="search-results">
+
+              <div class="search-result-item tappable">
+                <div class="result-icon">
+                  <img src="assets/icons/hop-point.svg" alt="" width="10.3" height="13.8">
+                </div>
+                <div class="result-content">
+                  <p class="result-name">33 Space (Back Entrance)</p>
+                  <div class="result-meta">
+                    <span class="result-distance">900 m</span>
+                    <div class="area-badge area-badge--active">
+                      <div class="area-badge-icon">
+                        <img src="assets/icons/map-area-active.svg" class="area-badge-map" alt="">
+                        <img src="assets/icons/hop-point-active.svg" class="area-badge-pin" alt="">
+                      </div>
+                      <span>Sukhumvit</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="search-result-item tappable">
+                <div class="result-icon">
+                  <img src="assets/icons/hop-point.svg" alt="" width="10.3" height="13.8">
+                </div>
+                <div class="result-content">
+                  <p class="result-name">Siam Center</p>
+                  <div class="result-meta">
+                    <span class="result-distance">900 m</span>
+                    <div class="area-badge area-badge--active">
+                      <div class="area-badge-icon">
+                        <img src="assets/icons/map-area-active.svg" class="area-badge-map" alt="">
+                        <img src="assets/icons/hop-point-active.svg" class="area-badge-pin" alt="">
+                      </div>
+                      <span>Sukhumvit</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="search-result-item tappable">
+                <div class="result-icon">
+                  <img src="assets/icons/hop-point.svg" alt="" width="10.3" height="13.8">
+                </div>
+                <div class="result-content">
+                  <p class="result-name">Bus stop at Kasetsart vehicle department (Vibhavadi Road)</p>
+                  <div class="result-meta">
+                    <span class="result-distance">1.2 km</span>
+                    <div class="area-badge area-badge--inactive">
+                      <div class="area-badge-icon">
+                        <img src="assets/icons/map-area-inactive.svg" class="area-badge-map" alt="">
+                        <img src="assets/icons/hop-point-inactive.svg" class="area-badge-pin" alt="">
+                      </div>
+                      <span>Rattanakosin</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div><!-- /scroll-area -->
+
+    </div><!-- /phone-body -->
+  </div><!-- /phone -->
+
+  <script src="js/utils.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/area-config.js"></script>
+  <script>document.write('<script src="pages/search/search.js?' + Date.now() + '"><\/script>');</script>
+
+  <!-- Proto Console -->
+  <script>window.CONSOLE_PAGE = 'search';</script>
+  <script src="proto-console.js"></script>
+  <script>
+    /* consoleReset and runScenario are defined in search.js — don't override them here */
+  </script>
+
+  <!-- Comment overlay -->
+  <div id="c-overlay" class="hidden"
+    style="position:fixed;top:0;left:0;right:0;bottom:0;z-index:99998;cursor:crosshair;"
+    onclick="handleCommentClick(event)"></div>
+
+  <!-- Console FAB -->
+  <button id="c-fab" onclick="toggleConsole()" style="z-index:99999;">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/>
+    </svg>
+    <span class="c-label">Console</span>
+  </button>
+
+  <!-- Console Panel -->
+  <div id="c-panel" class="hidden" style="background:#1A1A2E;z-index:99999;">
+
+    <div style="padding:10px 16px;border-bottom:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:space-between;">
+      <span style="font-size:11px;font-weight:700;letter-spacing:0.6px;color:rgba(255,255,255,0.4);text-transform:uppercase;">Prototype Console</span>
+      <button onclick="toggleConsole()" style="background:none;border:none;color:rgba(255,255,255,0.35);cursor:pointer;font-size:15px;line-height:1;padding:0;">&#x2715;</button>
+    </div>
+
+    <div style="padding:12px 16px;border-bottom:1px solid rgba(255,255,255,0.08);">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+        <span style="font-size:11px;font-weight:700;letter-spacing:0.5px;color:rgba(255,255,255,0.4);text-transform:uppercase;">Comment</span>
+        <span id="c-comment-count" class="hidden" style="font-size:10px;font-weight:800;background:#FBBF24;color:#000;border-radius:99px;padding:1px 7px;">0</span>
+      </div>
+      <button id="c-comment-btn" onclick="toggleCommentMode()"
+        style="width:100%;display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.08);border:none;border-radius:10px;padding:9px 12px;color:#fff;cursor:pointer;font-family:inherit;transition:background 0.15s;">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+        </svg>
+        <span style="font-size:13px;font-weight:600;">Pin a comment</span>
+      </button>
+      <div id="c-comments-list" style="margin-top:6px;max-height:140px;overflow-y:auto;"></div>
+    </div>
+
+    <div style="padding:12px 16px;border-bottom:1px solid rgba(255,255,255,0.08);">
+      <div style="font-size:11px;font-weight:700;letter-spacing:0.5px;color:rgba(255,255,255,0.4);text-transform:uppercase;margin-bottom:8px;">State</div>
+      <button onclick="consoleReset()"
+        style="width:100%;display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.08);border:none;border-radius:10px;padding:9px 12px;color:#fff;cursor:pointer;font-family:inherit;">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4.49"/>
+        </svg>
+        <span style="font-size:13px;font-weight:600;">Reset</span>
+      </button>
+    </div>
+
+    <div style="padding:12px 16px;border-bottom:1px solid rgba(255,255,255,0.08);">
+      <div style="font-size:11px;font-weight:700;letter-spacing:0.5px;color:rgba(255,255,255,0.4);text-transform:uppercase;margin-bottom:8px;">Pages</div>
+      <div style="display:flex;flex-direction:column;gap:4px;">
+        <a href="index.html" style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.08);border-radius:10px;padding:8px 12px;color:#fff;text-decoration:none;font-size:13px;font-weight:600;">
+          Home
+        </a>
+        <a href="search.html" style="display:flex;align-items:center;gap:8px;background:rgba(251,191,36,0.15);border:1px solid rgba(251,191,36,0.25);border-radius:10px;padding:8px 12px;color:#FCD34D;text-decoration:none;font-size:13px;font-weight:600;">
+          Search <span style="margin-left:auto;font-size:10px;opacity:0.5;">current</span>
+        </a>
+        <a href="select-dropoff.html" style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.08);border-radius:10px;padding:8px 12px;color:#fff;text-decoration:none;font-size:13px;font-weight:600;">
+          Select Drop-off
+        </a>
+        <a href="saved-places.html" style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.08);border-radius:10px;padding:8px 12px;color:#fff;text-decoration:none;font-size:13px;font-weight:600;">Saved Places</a>
+        <a href="request.html" style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.08);border-radius:10px;padding:8px 12px;color:#fff;text-decoration:none;font-size:13px;font-weight:600;">Request</a>
+      </div>
+    </div>
+
+    <div style="padding:12px 16px;">
+      <div style="font-size:11px;font-weight:700;letter-spacing:0.5px;color:rgba(255,255,255,0.4);text-transform:uppercase;margin-bottom:8px;">Scenarios</div>
+      <div style="display:flex;flex-direction:column;gap:4px;">
+        <button onclick="runScenario(0)" style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.08);border:none;border-radius:10px;padding:8px 12px;color:#fff;cursor:pointer;font-size:13px;font-weight:600;font-family:inherit;text-align:left;">
+          <span style="color:rgba(255,255,255,0.35);font-size:11px;">&#x25B6;</span> Search: Default
+        </button>
+        <button onclick="runScenario(1)" style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.08);border:none;border-radius:10px;padding:8px 12px;color:#fff;cursor:pointer;font-size:13px;font-weight:600;font-family:inherit;text-align:left;">
+          <span style="color:rgba(255,255,255,0.35);font-size:11px;">&#x25B6;</span> Search: Place results
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    if ('serviceWorker' in navigator)
+      navigator.serviceWorker.getRegistrations().then(regs => regs.forEach(r => r.unregister()));
+  </script>
+</body>
+</html>

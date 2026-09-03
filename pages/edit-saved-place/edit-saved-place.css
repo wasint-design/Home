@@ -1,0 +1,278 @@
+/* ========================================
+   Edit Saved Place — Styles
+   ======================================== */
+
+/* ===== PHONE OVERRIDE for map+sheet layout ===== */
+.phone {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== MAP SECTION ===== */
+.edit-map {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  background: #E8EAF0;
+  isolation: isolate;
+}
+
+#editMapLeaflet {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+/* Status bar layered on top of map */
+.edit-map .status-bar {
+  position: relative;
+  z-index: 6;
+  background: transparent;
+}
+
+/* Back + place name pill header */
+.edit-map-header {
+  position: relative;
+  z-index: 6;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 16px 8px;
+}
+
+.edit-map-back-btn {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: block;
+}
+
+.edit-map-pill {
+  flex: 1;
+  min-width: 0;
+  background: white;
+  border-radius: 16px;
+  padding: 8px 12px;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.15);
+  font: var(--font-body1);
+  color: var(--color-text-dark);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* GPS recenter button */
+.edit-gps-btn {
+  position: absolute;
+  bottom: 32px;
+  right: 16px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: white;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  z-index: 6;
+}
+
+/* ===== BOTTOM SHEET (edit form) ===== */
+.edit-sheet {
+  flex-shrink: 0;
+  background: white;
+  border-radius: 24px 24px 0 0;
+  margin-top: -24px;
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Title */
+.edit-sheet-title {
+  padding: 16px 20px 0;
+  font: var(--font-title1);
+  color: var(--color-primary);
+}
+
+/* Form body */
+.edit-sheet-body {
+  padding: 16px 20px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Hop-point card */
+.edit-hp-card {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 16px;
+  border: 1px solid var(--color-primary-light);
+  border-radius: 16px;
+}
+
+.edit-hp-card-icon {
+  position: relative;
+  width: 14px;
+  height: 19px;
+  flex-shrink: 0;
+}
+
+.edit-hp-card-icon img {
+  width: 100%;
+  height: 100%;
+}
+
+.edit-hp-card-name {
+  font: var(--font-body1);
+  color: var(--color-text-dark);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Fields wrapper */
+.edit-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Form fields */
+.edit-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.edit-field-label {
+  font: var(--font-body2);
+  color: var(--color-text-dark);
+}
+
+.edit-field-input {
+  height: 42px;
+  border: 1px solid #909090;
+  border-radius: 12px;
+  padding: 0 15px;
+  font: var(--font-body2);
+  color: var(--color-text-dark);
+  outline: none;
+}
+
+.edit-field-input::placeholder {
+  color: var(--color-text-muted);
+}
+
+.edit-field-input:focus {
+  border-color: var(--color-primary);
+}
+
+/* Label selector */
+.edit-labels-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.edit-label-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: var(--color-primary-light);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.edit-label-btn.active {
+  background: var(--color-primary);
+}
+
+.edit-label-btn img {
+  width: 18px;
+  height: 18px;
+}
+
+.edit-label-btn.active img {
+  filter: brightness(0) invert(1);
+}
+
+/* ===== FOOTER ===== */
+.edit-sheet-footer {
+  border-top: 1px solid #EEE;
+  margin-top: 16px;
+}
+
+.edit-footer-btns {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.edit-delete-btn {
+  width: 100%;
+  padding: 8px 16px;
+  background: white;
+  border: 1px solid var(--color-negative);
+  border-radius: 24px;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 28px;
+  color: var(--color-negative);
+  cursor: pointer;
+  font-family: var(--font-family);
+  letter-spacing: 0.25px;
+}
+
+.edit-delete-btn:active {
+  background: rgba(240, 85, 85, 0.06);
+}
+
+.edit-save-btn {
+  width: 100%;
+  padding: 8px 16px;
+  background: var(--color-primary);
+  border: none;
+  border-radius: 24px;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 28px;
+  color: white;
+  cursor: pointer;
+  font-family: var(--font-family);
+  letter-spacing: 0.25px;
+}
+
+.edit-save-btn:active {
+  opacity: 0.88;
+}
+
+.home-indicator {
+  height: 21px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 8px;
+}
+
+.home-indicator-bar {
+  width: 144px;
+  height: 5px;
+  background: black;
+  border-radius: 100px;
+}

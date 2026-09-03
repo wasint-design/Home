@@ -1,0 +1,416 @@
+/* ========================================
+   Search — Styles
+   ======================================== */
+
+/* ===== SEARCH HEADER (fixed, doesn't scroll) ===== */
+.search-header {
+  flex-shrink: 0;
+  background: var(--color-surface);
+}
+
+
+/* Header content area */
+.search-header-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px 16px;
+}
+
+/* Top row: back + title + Map chip */
+.search-header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.search-title-group {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.back-btn {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-page-title {
+  font: var(--font-title1);
+  color: var(--color-primary);
+}
+
+.map-chip {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-primary-light);
+  border-radius: var(--radius-lg);
+}
+
+.map-chip span {
+  font: var(--font-body2);
+  color: var(--color-text-dark);
+}
+
+/* ===== INPUTS ROW ===== */
+.search-inputs-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Connector (dots + arrow) */
+.input-connector {
+  position: relative;
+  width: 16px;
+  height: 62px;
+  flex-shrink: 0;
+}
+
+.connector-dot {
+  position: absolute;
+  left: 0;
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+}
+
+.connector-dot--pickup {
+  top: 0;
+  border: 3px solid var(--color-primary);
+  background: transparent;
+}
+
+.connector-dot--destination {
+  top: 46px;
+  background: var(--color-primary);
+  border: 2px solid var(--color-primary);
+}
+
+.connector-arrow-wrap {
+  position: absolute;
+  top: 18px;
+  left: -4px;
+  width: 24px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.connector-arrow-img {
+  width: 24px;
+  height: 26px;
+  transform: rotate(180deg);
+}
+
+/* Fields column */
+.search-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+}
+
+/* Pickup row (field + swap button) */
+.search-field-pickup-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.search-field {
+  height: 40px;
+  border: 1px solid #EEEEEE;
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0 14px;
+  overflow: hidden;
+  background: var(--color-surface);
+}
+
+.search-field--pickup {
+  flex: 1;
+  justify-content: space-between;
+}
+
+.search-field-left {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+  min-width: 0;
+}
+
+.pickup-field-text {
+  font: var(--font-body1);
+  color: var(--color-text-dark);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.field-clear-btn {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.field-clear-btn img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.swap-btn {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+}
+
+/* Destination field */
+.search-field--destination {
+  width: calc(100% - 40px);
+  gap: 0;
+  padding: 0 14px;
+}
+
+.destination-input {
+  flex: 1;
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  font: var(--font-body1);
+  color: var(--color-text-dark);
+  padding: 0;
+  caret-color: var(--color-text-dark);
+}
+
+.destination-input::placeholder {
+  color: var(--color-text-muted);
+}
+
+/* ===== SEARCH CONTENT (scrollable) ===== */
+.search-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-bottom: 32px;
+}
+
+.search-section + .search-section {
+  margin-top: 16px;
+}
+
+/* Promo banner */
+.search-promo {
+  width: 100%;
+  aspect-ratio: 393 / 88;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.search-promo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Section */
+.search-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.search-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+}
+
+.search-section-title {
+  font: var(--font-title1);
+  color: var(--color-primary);
+}
+
+.see-more-btn {
+  font: var(--font-label2);
+  color: var(--color-primary);
+}
+
+/* Result items */
+.search-results {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.search-result-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 64px;
+  padding: 0 16px;
+}
+
+.result-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.result-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  justify-content: center;
+  flex: 1;
+  min-width: 0;
+}
+
+.result-name {
+  font: var(--font-body1);
+  color: var(--color-text-dark);
+}
+
+.result-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.result-distance {
+  font-size: 12px;
+  line-height: 18px;
+  color: #939598;
+  width: 39px;
+  flex-shrink: 0;
+}
+
+/* Area badge */
+.area-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 8px;
+  font: var(--font-label2);
+}
+
+.area-badge--active {
+  background: rgba(13, 87, 226, 0.2);
+  color: var(--color-text-dark);
+}
+
+.area-badge--inactive {
+  background: #CCCCCC;
+  color: var(--color-text-muted);
+}
+
+.area-badge-icon {
+  position: relative;
+  width: 13px;
+  height: 13px;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.area-badge-map {
+  position: absolute;
+  left: 0.59px;
+  top: 2.45px;
+  width: 10.83px;
+  height: 7.39px;
+}
+
+.area-badge-pin {
+  position: absolute;
+  left: 1.56px;
+  top: 0.59px;
+  width: 6.77px;
+  height: 8.62px;
+}
+
+/* ===== PLACE RESULT GROUP ===== */
+
+/* Wrapper that contains place row + child hop-points + view-more */
+.search-result-group {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Place icon container — slightly larger to match yellow pin rendering */
+.result-icon--place {
+  width: 20px;
+  height: 20px;
+}
+
+/* Child hop-points — hidden by default, shown on expand */
+.place-hoppoints {
+  display: none;
+  flex-direction: column;
+}
+
+.place-hoppoints.expanded {
+  display: flex;
+}
+
+/* Child hop-point item — indented to align with parent text */
+/* parent left-padding:16 + icon:20 + gap:8 = 44px */
+.search-result-item--child {
+  padding-left: 44px;
+  min-height: 56px;
+}
+
+.search-result-item--child .result-icon {
+  width: 14px;
+  flex-shrink: 0;
+}
+
+/* View more / collapse toggle button */
+.view-more-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 16px 10px 44px;
+  font: var(--font-label2);
+  color: var(--color-primary);
+  font-family: var(--font-family);
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+}
+
+.view-more-chevron {
+  width: 6px;
+  height: 11px;
+  transform: rotate(90deg); /* default: points down ↓ */
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+
+/* When expanded: chevron points up ↑ */
+.view-more-btn.expanded .view-more-chevron {
+  transform: rotate(-90deg);
+}

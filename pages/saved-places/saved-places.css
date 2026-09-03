@@ -1,0 +1,153 @@
+/* ========================================
+   Saved Places — Styles
+   ======================================== */
+
+/* ===== TOP BAR ===== */
+.sp-bar {
+  flex-shrink: 0;
+  height: 64px;
+  background: var(--color-surface);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.sp-back-btn {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+  padding: 0;
+}
+
+.sp-bar-title {
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 36px;
+  color: var(--color-text-dark);
+  font-family: var(--font-family);
+  letter-spacing: 0.25px;
+}
+
+/* ===== CONTENT AREA ===== */
+.sp-content {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-width: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+}
+
+.sp-content::-webkit-scrollbar {
+  display: none;
+}
+
+/* ===== ADD SAVED PLACE ROW ===== */
+.sp-add-row {
+  width: 361px;
+  padding: 24px 0;
+  border-bottom: 1px solid var(--color-primary-light);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.sp-add-row img {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.sp-add-text {
+  font: var(--font-body1);
+  color: var(--color-text-dark);
+}
+
+/* ===== SAVED PLACES LIST ===== */
+.sp-list {
+  width: 100%;
+  padding: 0 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: flex-start;
+  overflow-x: clip;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.sp-list::-webkit-scrollbar {
+  display: none;
+}
+
+/* ===== PLACE ITEM ===== */
+.sp-item {
+  width: 361px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Label icon: rounded light-blue square with icon inside */
+.sp-item-icon {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  background: var(--color-primary-light);
+  border-radius: 6px;
+  position: relative;
+}
+
+.sp-item-icon img {
+  position: absolute;
+  left: 5px;
+  top: 5px;
+  width: 14px;
+  height: 14px;
+}
+
+/* Info column: label + place name */
+.sp-item-info {
+  flex: 1 0 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  min-height: 64px;
+}
+
+.sp-item-label {
+  font: var(--font-body1);
+  color: var(--color-text-dark);
+  min-width: 100%;
+}
+
+.sp-item-place {
+  font: var(--font-body2);
+  color: #939598;
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Overflow menu button */
+.sp-item-menu {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

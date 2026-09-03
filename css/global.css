@@ -1,0 +1,243 @@
+/* ========================================
+   Muvmi Revamp — Global Styles
+   ======================================== */
+
+/* --- Reset --- */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+img {
+  -webkit-user-drag: none;
+  user-select: none;
+  display: block;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+/* --- CSS Custom Properties (from Figma design tokens) --- */
+:root {
+  /* Accent Colours */
+  --color-primary: #0D57E2;
+  --color-primary-light: #E7EEFC;
+  --color-on-primary: #FFFFFF;
+
+  /* Semantic */
+  --color-negative: #F05555;
+  --color-positive: #4BCD82;
+
+  /* Neutral */
+  --color-bg: #F0F2F5;
+  --color-surface: #FFFFFF;
+  --color-text-dark: #4F4F4F;
+  --color-text-muted: #909090;
+
+  /* Header Gradient */
+  --gradient-header: linear-gradient(112deg, #2E6FE8 4.86%, #0D57E2 49.93%, #0740B8 95.01%);
+
+  /* Typography — Opun Mai Lite (fallback to system) */
+  --font-family: 'Opun Mai Lite', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+
+  /* Font Sizes (from Figma) */
+  --font-title1: 600 16px/24px var(--font-family);   /* SemiBold 16 */
+  --font-body1: 600 14px/22px var(--font-family);     /* SemiBold 14 */
+  --font-body2: 500 14px/22px var(--font-family);     /* Medium 14 */
+  --font-label1: 600 12px/18px var(--font-family);    /* SemiBold 12 */
+  --font-label2: 500 12px/18px var(--font-family);    /* Medium 12 */
+  --font-label3: 500 10px/18px var(--font-family);    /* Medium 10 */
+
+  /* Spacing */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 12px;
+  --space-lg: 16px;
+  --space-xl: 20px;
+  --space-2xl: 24px;
+  --space-3xl: 32px;
+
+  /* Radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 18px;
+  --radius-full: 999px;
+
+  /* Shadows */
+  --shadow-normal: 0 0 4px rgba(0,0,0,0.15);
+}
+
+body {
+  font-family: var(--font-family);
+  background: #F0F2F5;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  -webkit-font-smoothing: antialiased;
+  letter-spacing: 0.25px;
+  color: var(--color-text-dark);
+}
+
+/* --- Mobile Viewport (393px wide, no frame) --- */
+.phone {
+  width: 393px;
+  height: 852px;
+  background: var(--color-surface);
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- Phone Body (scrollable content area) --- */
+.phone-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+/* --- Scrollable Content --- */
+.scroll-area {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.scroll-area::-webkit-scrollbar {
+  display: none;
+}
+
+/* --- Horizontal Scroll Row --- */
+.h-scroll-row {
+  display: flex;
+  gap: var(--space-lg);
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding: 0 var(--space-lg);
+}
+
+.h-scroll-row::-webkit-scrollbar {
+  display: none;
+}
+
+.h-scroll-row > * {
+  flex-shrink: 0;
+}
+
+/* --- Status Bar (shared across all pages) --- */
+/* Default: dark text + dark icons — works on white/light backgrounds */
+.status-bar {
+  height: 44px;
+  display: flex;
+  flex-direction: row;          /* explicit — prevents vertical stacking */
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 22px;
+  color: var(--color-text-dark);
+}
+
+.status-bar-time {
+  font-family: 'Poppins', var(--font-family);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 15px;
+  letter-spacing: 0.2px;
+}
+
+.status-bar-icons {
+  display: flex;
+  flex-direction: row;          /* explicit — prevents icons stacking vertically */
+  align-items: center;
+  gap: 6px;
+}
+
+/* Icons are white SVGs — rendered dark by default (works on white/light bg) */
+.status-bar-icons img {
+  display: inline-block;        /* override global img display:block inside flex */
+  width: 16px;
+  height: 16px;
+  filter: brightness(0);
+}
+
+.status-bar-icons img:last-child {
+  width: 18px;
+  height: 18px;
+}
+
+/* On dark/coloured backgrounds: restore white icons */
+.status-bar--on-dark .status-bar-icons img {
+  filter: none;
+}
+.status-bar--on-dark {
+  color: #fff;
+}
+
+/* --- Home Indicator (shared across pages) --- */
+.home-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 22px;
+  background: var(--color-surface);
+  flex-shrink: 0;
+}
+
+.home-indicator-bar {
+  width: 130px;
+  height: 5px;
+  border-radius: 99px;
+  background: rgba(0, 0, 0, 0.22);
+}
+
+/* --- Leaflet Marker Reset (shared across all map pages) --- */
+.leaflet-marker-icon,
+.leaflet-marker-shadow {
+  background: none !important;
+  border: none !important;
+}
+
+/* --- Tap Feedback (no hover) --- */
+.tappable:active {
+  opacity: 0.85;
+  transform: scale(0.98);
+}
+
+/* --- Proto Console — always on top, fully self-sufficient styles --- */
+#c-fab {
+  z-index: 99999 !important;
+  position: fixed !important;
+  right: 24px !important;
+  bottom: 24px !important;
+  top: auto !important;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 8px !important;
+  background: #1A1A2E !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 999px !important;
+  padding: 10px 16px !important;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3) !important;
+  cursor: pointer !important;
+  font-family: inherit !important;
+}
+#c-panel { z-index: 99999 !important; position: fixed !important; }
+#c-overlay { z-index: 99998 !important; position: fixed !important; }
+.comment-pin { z-index: 99997 !important; position: fixed !important; }
+#c-input-popup { z-index: 100000 !important; position: fixed !important; }

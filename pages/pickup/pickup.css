@@ -1,0 +1,322 @@
+/* ========================================
+   Select Pickup — Styles
+   (extends dropoff layout; pickup-specific overrides here)
+   ======================================== */
+
+/* ===== PHONE OVERRIDE for map+sheet layout ===== */
+.phone {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== MAP SECTION ===== */
+.pickup-map {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  background: #E8EAF0;
+  isolation: isolate;
+}
+
+/* ===== LEAFLET MAP CONTAINER ===== */
+#mapLeaflet {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.user-location-dot {
+  filter: drop-shadow(0 0 6px rgba(13, 87, 226, 0.5));
+}
+
+/* Status bar layered on top of map */
+.pickup-map .status-bar {
+  position: relative;
+  z-index: 6;
+  background: transparent;
+}
+
+/* Back + search pill header */
+.map-header {
+  position: relative;
+  z-index: 6;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 16px 8px;
+}
+
+.map-back-btn {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: block;
+}
+
+/* Search bar pill (pickup page) — placeholder style */
+.map-search-pill {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: white;
+  border: 1px solid #E7EEFC;
+  border-radius: 16px;
+  padding: 9px 13px;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.15);
+  cursor: text;
+}
+
+.map-search-pill img {
+  flex-shrink: 0;
+}
+
+.map-search-text {
+  font: var(--font-body1);
+  font-size: 14px;
+  font-weight: 500;
+  color: #909090;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ===== MAP PINS ===== */
+.map-lf-pin {
+  position: relative;
+}
+
+.map-lf-pin img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.map-lf-letter {
+  position: absolute;
+  font-weight: 700;
+  font-family: var(--font-family);
+  line-height: 1;
+}
+
+.map-lf-letter.active {
+  top: 2.49px;
+  left: 5.61px;
+  width: 6.234px;
+  height: 12.468px;
+  font-size: 9.9px;
+  line-height: 14.85px;
+  letter-spacing: 0.1547px;
+  color: #0D57E2;
+}
+
+.map-lf-letter.inactive {
+  top: 1.99px;
+  left: 4.49px;
+  width: 4.987px;
+  height: 9.974px;
+  font-size: 7.92px;
+  line-height: 11.88px;
+  letter-spacing: 0.1237px;
+  color: #7D9EDC;
+}
+
+/* ===== GPS RECENTER BUTTON ===== */
+.map-gps-btn {
+  position: absolute;
+  bottom: 32px;
+  right: 16px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: white;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  z-index: 6;
+}
+
+/* ===== BOTTOM SHEET ===== */
+.pickup-sheet {
+  flex-shrink: 0;
+  background: white;
+  border-radius: 24px 24px 0 0;
+  margin-top: -24px;
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  max-height: 60vh;
+}
+
+.sheet-title {
+  flex-shrink: 0;
+  padding: 16px 20px 0;
+  font: var(--font-body1);
+  color: var(--color-text-dark);
+}
+
+.sheet-list {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-width: none;
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sheet-list::-webkit-scrollbar {
+  display: none;
+}
+
+/* ===== PICKUP ITEMS ===== */
+.pickup-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.15s;
+}
+
+.pickup-item.selected {
+  background: #E7EEFC;
+}
+
+.pickup-item.selected .hp-name {
+  color: var(--color-primary);
+}
+
+.hp-icon {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hp-pin-wrap {
+  position: relative;
+  width: 14px;
+  height: 19px;
+}
+
+.hp-pin-img {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.hp-letter {
+  position: absolute;
+  top: 2px;
+  left: 4.5px;
+  width: 5px;
+  height: 10px;
+  font-size: 7.94px;
+  font-weight: 700;
+  color: #0D57E2;
+  line-height: 11.91px;
+  letter-spacing: 0.1241px;
+  font-family: var(--font-family);
+}
+
+.hp-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.hp-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-dark);
+  font-family: var(--font-family);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color 0.15s;
+}
+
+.hp-dist {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--color-text-dark);
+  font-family: var(--font-family);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.hp-info-btn {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+/* ===== FOOTER ===== */
+.sheet-footer {
+  flex-shrink: 0;
+  border-top: 1px solid #EEE;
+  background: white;
+}
+
+.pickup-cta-wrap {
+  padding: 16px 16px 0;
+}
+
+.pickup-cta-btn {
+  width: 100%;
+  padding: 8px 16px;
+  background: var(--color-primary);
+  border: none;
+  border-radius: 24px;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 28px;
+  color: white;
+  cursor: pointer;
+  font-family: var(--font-family);
+  letter-spacing: 0.25px;
+}
+
+.pickup-cta-btn:active {
+  opacity: 0.88;
+}
+
+.home-indicator {
+  height: 21px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 8px;
+}
+
+.home-indicator-bar {
+  width: 144px;
+  height: 5px;
+  background: black;
+  border-radius: 100px;
+}

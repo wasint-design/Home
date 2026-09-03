@@ -1,0 +1,236 @@
+/* ========================================
+   Add Saved Place (Choose saved place) — Styles
+   ======================================== */
+
+/* ===== STICKY HEADER ===== */
+.asp-header {
+  flex-shrink: 0;
+  background: white;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Content area below status bar */
+.asp-header-content {
+  padding: 10px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Top row: back + title */
+.asp-header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.asp-title-group {
+  display: flex;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+.asp-back-btn {
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.asp-title {
+  font: var(--font-title1);
+  color: var(--color-primary);
+  white-space: nowrap;
+}
+
+/* Map chip */
+.asp-map-chip {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  background: white;
+  border: 1px solid var(--color-primary-light);
+  border-radius: 16px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.asp-map-chip img {
+  width: 16px;
+  height: 16px;
+}
+
+.asp-map-chip span {
+  font: var(--font-body2);
+  color: var(--color-text-dark);
+}
+
+/* Search input */
+.asp-search-input {
+  width: 100%;
+  height: 40px;
+  border: 1px solid #EEE;
+  border-radius: 16px;
+  padding: 0 14px;
+  font: var(--font-body1);
+  color: var(--color-text-dark);
+  outline: none;
+}
+
+.asp-search-input::placeholder {
+  color: var(--color-text-muted);
+}
+
+.asp-search-input:focus {
+  border-color: var(--color-primary);
+}
+
+/* ===== SCROLLABLE CONTENT ===== */
+.asp-content {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-width: none;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding-top: 22px;
+}
+
+.asp-content::-webkit-scrollbar {
+  display: none;
+}
+
+/* ===== SECTION ===== */
+.asp-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.asp-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  white-space: nowrap;
+}
+
+.asp-section-title {
+  font: var(--font-title1);
+  color: var(--color-primary);
+}
+
+.asp-section-more {
+  font: var(--font-label2);
+  color: var(--color-primary);
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+/* ===== HOP-POINT LIST ===== */
+.asp-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 0 16px;
+  overflow-x: clip;
+}
+
+/* ===== HOP-POINT ITEM ===== */
+.asp-item {
+  width: 361px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.asp-item-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: clip;
+}
+
+.asp-item-icon img {
+  width: 10px;
+  height: 14px;
+}
+
+.asp-item-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 64px;
+  justify-content: center;
+}
+
+.asp-item-name {
+  font: var(--font-body1);
+  color: var(--color-text-dark);
+}
+
+/* Distance + zone tag row */
+.asp-item-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.asp-item-dist {
+  font-family: 'Poppins', var(--font-family);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 18px;
+  color: #939598;
+  width: 39px;
+}
+
+/* Zone tag pill */
+.asp-zone-tag {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 0 8px;
+  border-radius: 8px;
+}
+
+.asp-zone-tag.active {
+  background: rgba(13, 87, 226, 0.2);
+}
+
+.asp-zone-tag.disabled {
+  background: #CCC;
+}
+
+.asp-zone-icon {
+  width: 13px;
+  height: 13px;
+  overflow: clip;
+  flex-shrink: 0;
+}
+
+.asp-zone-name {
+  font: var(--font-label2);
+  white-space: nowrap;
+}
+
+.asp-zone-tag.active .asp-zone-name {
+  color: var(--color-text-dark);
+}
+
+.asp-zone-tag.disabled .asp-zone-name {
+  color: var(--color-text-muted);
+}

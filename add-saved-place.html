@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Muvmi — Add Saved Place</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="pages/add-saved-place/add-saved-place.css">
+  <link rel="stylesheet" href="pages/dropoff/dropoff.css">
+  <link rel="stylesheet" href="css/save-favorite.css">
+</head>
+<body>
+
+  <div class="phone">
+    <div class="phone-body">
+
+      <!-- ===== HEADER ===== -->
+      <div class="asp-header">
+
+        <!-- Status Bar -->
+        <div class="status-bar">
+          <span class="status-bar-time">9:41</span>
+          <div class="status-bar-icons">
+            <img src="assets/icons/signal.svg" alt="" width="16" height="16">
+            <img src="assets/icons/wifi.svg" alt="" width="16" height="16">
+            <img src="assets/icons/battery.svg" alt="" width="18" height="18">
+          </div>
+        </div>
+
+        <div class="asp-header-content">
+          <!-- Top row: back + title -->
+          <div class="asp-header-top">
+            <div class="asp-title-group">
+              <button class="asp-back-btn tappable" onclick="history.back()">
+                <img src="assets/icons/chevron-left.svg" alt="Back" width="24" height="24">
+              </button>
+              <span class="asp-title">Choose saved place</span>
+            </div>
+          </div>
+
+          <!-- Search input -->
+          <input type="text" class="asp-search-input" id="aspSearchInput" placeholder="Enter destination"
+                 autocomplete="off" autocorrect="off" spellcheck="false">
+        </div>
+
+      </div>
+
+      <!-- ===== SCROLLABLE CONTENT ===== -->
+      <div class="asp-content" data-drag="vertical">
+
+        <!-- Recent section -->
+        <div class="asp-section" id="aspRecent">
+          <div class="asp-section-header">
+            <span class="asp-section-title">Recent</span>
+            <button class="asp-section-more tappable">See more</button>
+          </div>
+          <div class="asp-list" id="aspRecentList"></div>
+        </div>
+
+        <!-- Nearby section -->
+        <div class="asp-section" id="aspNearby">
+          <div class="asp-section-header">
+            <span class="asp-section-title">Nearby</span>
+          </div>
+          <div class="asp-list" id="aspNearbyList"></div>
+        </div>
+
+        <!-- Search results (hidden until typing) -->
+        <div class="asp-section" id="aspResults" style="display:none">
+          <div class="asp-section-header">
+            <span class="asp-section-title">Results</span>
+          </div>
+          <div class="asp-list" id="aspResultsList"></div>
+        </div>
+
+      </div>
+
+    </div><!-- /phone-body -->
+  </div><!-- /phone -->
+
+  <!-- ===== HOP-POINT INFO DIALOG ===== -->
+  <div id="hpInfoDialog" class="hp-info-dialog hidden">
+    <div class="hp-info-backdrop" onclick="closeHpInfo()"></div>
+    <div class="hp-info-wrap">
+      <div class="hp-info-card">
+        <!-- Header: pin + name + close -->
+        <div class="hp-card-header">
+          <div class="hp-card-pin-wrap">
+            <img src="assets/icons/hop-point-list.svg" alt="" width="14" height="19">
+          </div>
+          <span class="hp-card-name" id="hpInfoName">Hop-point</span>
+          <button class="hp-card-close tappable" onclick="closeHpInfo()">
+            <img src="assets/icons/x-close.svg" alt="Close" width="20" height="20">
+          </button>
+        </div>
+        <!-- Scrollable content -->
+        <div class="hp-card-scroll">
+          <!-- Opening hours pill -->
+          <div class="hp-hours-row">
+            <button class="hp-hours-pill tappable">
+              <img src="assets/icons/clock.svg" alt="" width="10" height="10">
+              <span>Opening Hours</span>
+              <img src="assets/icons/chevron-down-sm.svg" alt="" width="8" height="4" style="transform:rotate(180deg)">
+            </button>
+          </div>
+          <!-- Photo carousel -->
+          <div class="hp-photos-outer">
+            <div class="hp-photos-track" id="hpPhotosTrack" data-drag="horizontal"></div>
+          </div>
+          <!-- Info section -->
+          <div class="hp-info-section">
+            <span class="hp-type-badge" id="hpInfoType">Mall</span>
+            <p class="hp-info-desc" id="hpInfoDesc"></p>
+            <p class="hp-info-dist" id="hpInfoDist"></p>
+          </div>
+        </div>
+        <!-- Footer CTA: Save This Place -->
+        <div class="hp-card-footer">
+          <button class="hp-cta-outline tappable" onclick="saveFromDialog()">Save This Place</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/utils.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/save-favorite.js"></script>
+  <script src="pages/add-saved-place/add-saved-place.js"></script>
+
+  <script>
+    if ('serviceWorker' in navigator)
+      navigator.serviceWorker.getRegistrations().then(regs => regs.forEach(r => r.unregister()));
+  </script>
+</body>
+</html>
