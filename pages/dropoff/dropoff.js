@@ -4,22 +4,22 @@
 
 /* Extra info shown in the hop-point info dialog */
 const HP_INFO = {
-  1: { type: 'Street',      desc: 'On the corner of Sukhumvit Soi 31, opposite the 7-Eleven entrance',        photos: ['hoppoint-photo.png', 'place-lumpini.png', 'place-siam-paragon.png'] },
-  2: { type: 'Street',      desc: 'In front of the building at the Sukhumvit Soi 33 intersection',            photos: ['place-lumpini.png', 'hoppoint-photo.png', 'place-grand-palace.png'] },
-  3: { type: 'BTS Station', desc: 'At the base of BTS Phrom Phong Exit 4, just outside the fare gates',       photos: ['place-grand-palace.png', 'hoppoint-photo.png', 'place-lumpini.png'] },
-  4: { type: 'Mall',        desc: 'In front of EmQuartier main entrance on Sukhumvit Road, near the fountain', photos: ['hoppoint-photo.png', 'place-siam-paragon.png', 'place-lumpini.png'] },
-  5: { type: 'Street',      desc: 'Near the intersection of Sukhumvit Soi 39 and Sukhumvit Road, north side',  photos: ['place-siam-paragon.png', 'hoppoint-photo.png', 'place-grand-palace.png'] },
+  1: { type: 'Mall',        desc: 'Main entrance of Siam Paragon, facing Rama I Road',                        photos: ['place-siam-paragon.png', 'hoppoint-photo.png', 'place-lumpini.png'] },
+  2: { type: 'Mall',        desc: 'Back gate of Siam Paragon on Rama I Road side, near the taxi stand',       photos: ['place-lumpini.png', 'hoppoint-photo.png', 'place-siam-paragon.png'] },
+  3: { type: 'Mall',        desc: 'Parking entrance B, lower ground level access via ramp',                    photos: ['place-grand-palace.png', 'hoppoint-photo.png', 'place-siam-paragon.png'] },
+  4: { type: 'Mall',        desc: 'Parking entrance C, accessible from Phayathai Road side',                   photos: ['hoppoint-photo.png', 'place-siam-paragon.png', 'place-lumpini.png'] },
+  5: { type: 'Mall',        desc: 'Parking entrance D, east side near the connecting bridge',                   photos: ['place-siam-paragon.png', 'hoppoint-photo.png', 'place-grand-palace.png'] },
 };
 
 let currentInfoHp = null;
 
-/* Lat/lng for hop-points around Siam Paragon / Pathumwan area, Bangkok */
+/* Lat/lng for hop-points around Siam Paragon */
 const PIN_DATA = {
-  1: { label: 'A', lat: 13.7452, lng: 100.5348, name: 'Sukhumvit Soi 31 · Hop-point 4', dist: '1.2 km' },
-  2: { label: 'B', lat: 13.7465, lng: 100.5325, name: 'Sukhumvit Soi 33 · Hop-point 3', dist: '0.5 km' },
-  3: { label: 'C', lat: 13.7477, lng: 100.5360, name: 'Phrom Phong BTS Exit 4', dist: '0.2 km' },
-  4: { label: 'D', lat: 13.7448, lng: 100.5378, name: 'EmQuartier Hop-point', dist: '1.2 km' },
-  5: { label: 'E', lat: 13.7440, lng: 100.5308, name: 'Sukhumvit Soi 39 · Hop-point 7', dist: '1.8 km' },
+  1: { label: 'A', lat: 13.7452, lng: 100.5348, name: 'Siam Paragon (Main Entrance)',      dist: '50 m'  },
+  2: { label: 'B', lat: 13.7465, lng: 100.5325, name: 'Siam Paragon (Back Gate, Rama I)',   dist: '120 m' },
+  3: { label: 'C', lat: 13.7477, lng: 100.5360, name: 'Siam Paragon (Parking Entrance B)',  dist: '200 m' },
+  4: { label: 'D', lat: 13.7448, lng: 100.5378, name: 'Siam Paragon (Parking Entrance C)',  dist: '250 m' },
+  5: { label: 'E', lat: 13.7440, lng: 100.5308, name: 'Siam Paragon (Parking Entrance D)',  dist: '300 m' },
 };
 
 /* Origin: the destination marker (where the car will be / Siam Paragon vicinity) */
