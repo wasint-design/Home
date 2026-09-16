@@ -7,7 +7,7 @@ const PIN_DATA = {
   1: { label: 'A', lat: 13.7502, lng: 100.5395, name: 'Sukhumvit Soi 22 · Hop-point 1', dist: '0.8 km' },
   2: { label: 'B', lat: 13.7519, lng: 100.5385, name: 'Sukhumvit Soi 20 · Hop-point 2', dist: '1.1 km' },
   3: { label: 'C', lat: 13.7495, lng: 100.5418, name: 'Asok Station · Hop-point 3',      dist: '0.5 km' },
-  4: { label: 'D', lat: 13.7513, lng: 100.5412, name: 'EmQuartier Hop-point',            dist: '0.3 km' },
+  4: { label: 'D', lat: 13.7513, lng: 100.5412, name: 'Emquatiers main entrance',         dist: '0.3 km' },
   5: { label: 'E', lat: 13.7527, lng: 100.5400, name: 'Sukhumvit Soi 18 · Hop-point 5', dist: '1.4 km' },
 };
 
