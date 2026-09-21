@@ -435,7 +435,25 @@
   <script>window.CONSOLE_PAGE = 'home';</script>
   <script src="js/save-favorite.js"></script>
   <script src="proto-console.js"></script>
-  <!-- consoleReset + runScenario defined in home.js -->
+  <script>
+    window.consoleReset = function () {
+      localStorage.clear();
+      sessionStorage.clear();
+      document.getElementById('c-panel').classList.add('hidden');
+      location.reload();
+    };
+
+    window.runScenario = function (idx) {
+      consoleReset();
+      const plays = [
+        () => { setVariation(1); },
+        () => { setVariation(2); },
+        () => { setVariation(3); },
+        () => { setVariation(4); },
+      ];
+      plays[idx]?.();
+    };
+  </script>
 
   <!-- Comment overlay -->
   <div id="c-overlay" class="hidden"
@@ -519,16 +537,16 @@
     <div style="padding:12px 16px;">
       <div style="font-size:11px;font-weight:700;letter-spacing:0.5px;color:rgba(255,255,255,0.4);text-transform:uppercase;margin-bottom:8px;">Scenarios</div>
       <div style="display:flex;flex-direction:column;gap:4px;">
-        <button onclick="runScenario(1)" style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.08);border:none;border-radius:10px;padding:8px 12px;color:#fff;cursor:pointer;font-size:13px;font-weight:600;font-family:inherit;text-align:left;">
+        <button onclick="runScenario(0)" style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.08);border:none;border-radius:10px;padding:8px 12px;color:#fff;cursor:pointer;font-size:13px;font-weight:600;font-family:inherit;text-align:left;">
           <span style="color:rgba(255,255,255,0.35);font-size:11px;">&#x25B6;</span> Homepage: New User
         </button>
-        <button onclick="runScenario(2)" style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.08);border:none;border-radius:10px;padding:8px 12px;color:#fff;cursor:pointer;font-size:13px;font-weight:600;font-family:inherit;text-align:left;">
+        <button onclick="runScenario(1)" style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.08);border:none;border-radius:10px;padding:8px 12px;color:#fff;cursor:pointer;font-size:13px;font-weight:600;font-family:inherit;text-align:left;">
           <span style="color:rgba(255,255,255,0.35);font-size:11px;">&#x25B6;</span> Homepage: Casual
         </button>
-        <button onclick="runScenario(3)" style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.08);border:none;border-radius:10px;padding:8px 12px;color:#fff;cursor:pointer;font-size:13px;font-weight:600;font-family:inherit;text-align:left;">
+        <button onclick="runScenario(2)" style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.08);border:none;border-radius:10px;padding:8px 12px;color:#fff;cursor:pointer;font-size:13px;font-weight:600;font-family:inherit;text-align:left;">
           <span style="color:rgba(255,255,255,0.35);font-size:11px;">&#x25B6;</span> Homepage: Recurring
         </button>
-        <button onclick="runScenario(4)" style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.08);border:none;border-radius:10px;padding:8px 12px;color:#fff;cursor:pointer;font-size:13px;font-weight:600;font-family:inherit;text-align:left;">
+        <button onclick="runScenario(3)" style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.08);border:none;border-radius:10px;padding:8px 12px;color:#fff;cursor:pointer;font-size:13px;font-weight:600;font-family:inherit;text-align:left;">
           <span style="color:rgba(255,255,255,0.35);font-size:11px;">&#x25B6;</span> Homepage: Travel
         </button>
       </div>
@@ -540,7 +558,5 @@
     if ('serviceWorker' in navigator)
       navigator.serviceWorker.getRegistrations().then(regs => regs.forEach(r => r.unregister()));
   </script>
-
-  <script src="js/remote.js"></script>
 </body>
 </html>
