@@ -270,31 +270,37 @@
     function connectSession() {
       sessionId = document.getElementById('sessionInput').value.trim() || 'default';
 
-      if (!Remote.FIREBASE_CONFIG.apiKey) {
-        alert('Firebase config not set yet.\nEdit js/remote.js and fill in FIREBASE_CONFIG.');
-        return;
-      }
-
-      if (!firebase.apps.length) {
-        firebase.initializeApp(Remote.FIREBASE_CONFIG);
-      }
-      db = firebase.database();
-
-      /* Watch user's reported state */
-      db.ref(`sessions/${sessionId}/state`).on('value', snap => {
-        const state = snap.val();
-        const dot = document.getElementById('statusDot');
-        const pageEl = document.getElementById('statusPage');
-        if (state && state.page) {
-          dot.classList.add('connected');
-          pageEl.textContent = state.page;
-        } else {
-          dot.classList.remove('connected');
-          pageEl.textContent = '—';
+      try {
+        if (!Remote.FIREBASE_CONFIG.apiKey) {
+          alert('Firebase config not set yet.\nEdit js/remote.js and fill in FIREBASE_CONFIG.');
+          return;
         }
-      });
 
-      updateShareLink();
+        if (!firebase.apps.length) {
+          firebase.initializeApp(Remote.FIREBASE_CONFIG);
+        }
+        db = firebase.database();
+
+        /* Watch user's reported state */
+        db.ref(`sessions/${sessionId}/state`).on('value', snap => {
+          const state = snap.val();
+          const dot = document.getElementById('statusDot');
+          const pageEl = document.getElementById('statusPage');
+          if (state && state.page) {
+            dot.classList.add('connected');
+            pageEl.textContent = state.page;
+          } else {
+            dot.classList.remove('connected');
+            pageEl.textContent = '—';
+          }
+        });
+
+        updateShareLink();
+        console.log('Connected to session:', sessionId);
+      } catch (e) {
+        alert('Firebase connection error: ' + e.message);
+        console.error(e);
+      }
     }
 
     function send(action, params) {
@@ -323,6 +329,8 @@
     const urlSession = new URLSearchParams(window.location.search).get('session');
     if (urlSession) document.getElementById('sessionInput').value = urlSession;
     updateShareLink();
+    /* Auto-connect immediately */
+    connectSession();
   </script>
 
 </body>
