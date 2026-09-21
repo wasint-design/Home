@@ -104,6 +104,13 @@ const VARIATIONS = {
 let currentVariation = 1;
 
 function initVariation() {
+  /* URL param takes priority: ?scenario=1..4 */
+  const urlScenario = new URLSearchParams(window.location.search).get('scenario');
+  if (urlScenario && VARIATIONS[urlScenario]) {
+    setVariation(Number(urlScenario), true);
+    return;
+  }
+  /* Otherwise restore from localStorage */
   const saved = localStorage.getItem('homepage-variation');
   if (saved && VARIATIONS[saved]) {
     setVariation(Number(saved), true);
