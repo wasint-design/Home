@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Muvmi — Remote Controller</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0F172A;
+      color: #E2E8F0;
+      min-height: 100vh;
+      padding: 24px;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .header h1 {
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .badge {
+      background: #10B981;
+      color: white;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+
+    /* Session */
+    .session-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 24px;
+      padding: 12px 16px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 12px;
+    }
+
+    .session-bar label {
+      font-size: 13px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.5);
+      white-space: nowrap;
+    }
+
+    .session-bar input {
+      flex: 1;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 8px;
+      padding: 6px 10px;
+      color: #FCD34D;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: monospace;
+    }
+
+    .session-bar button {
+      background: #10B981;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 6px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    /* Status */
+    .status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 24px;
+      padding: 10px 16px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 10px;
+      font-size: 13px;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #EF4444;
+    }
+
+    .status-dot.connected { background: #10B981; }
+
+    .status-page {
+      color: #FCD34D;
+      font-weight: 600;
+    }
+
+    /* Sections */
+    .section {
+      margin-bottom: 20px;
+    }
+
+    .section-title {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      color: rgba(255,255,255,0.4);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .btn-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+    }
+
+    .btn-grid.cols-1 { grid-template-columns: 1fr; }
+
+    .cmd-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.08);
+      border: none;
+      border-radius: 10px;
+      padding: 10px 14px;
+      color: #fff;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      font-family: inherit;
+      text-align: left;
+      transition: background 0.15s;
+    }
+
+    .cmd-btn:active { background: rgba(255,255,255,0.15); }
+    .cmd-btn .icon { font-size: 16px; flex-shrink: 0; }
+
+    .cmd-btn.danger { color: #F87171; }
+    .cmd-btn.scenario { color: #A5B4FC; }
+
+    /* Share link */
+    .share-section {
+      margin-top: 24px;
+      padding: 16px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 12px;
+    }
+
+    .share-section p {
+      font-size: 12px;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 8px;
+    }
+
+    .share-link {
+      width: 100%;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 8px;
+      padding: 8px 10px;
+      color: #93C5FD;
+      font-size: 12px;
+      font-family: monospace;
+      word-break: break-all;
+    }
+
+    .copy-btn {
+      margin-top: 8px;
+      background: #3B82F6;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 6px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body id="remoteController">
+
+  <div class="header">
+    <h1>Remote Controller</h1>
+    <span class="badge">LIVE</span>
+  </div>
+
+  <!-- Session ID -->
+  <div class="session-bar">
+    <label>Session:</label>
+    <input type="text" id="sessionInput" value="default">
+    <button onclick="connectSession()">Connect</button>
+  </div>
+
+  <!-- Connection status -->
+  <div class="status">
+    <div class="status-dot" id="statusDot"></div>
+    <span>User is on: </span>
+    <span class="status-page" id="statusPage">—</span>
+  </div>
+
+  <!-- Scenarios (Homepage) -->
+  <div class="section">
+    <div class="section-title">Scenarios</div>
+    <div class="btn-grid">
+      <button class="cmd-btn scenario" onclick="send('runScenario',[1])">
+        <span class="icon">1</span> New User
+      </button>
+      <button class="cmd-btn scenario" onclick="send('runScenario',[2])">
+        <span class="icon">2</span> Casual
+      </button>
+      <button class="cmd-btn scenario" onclick="send('runScenario',[3])">
+        <span class="icon">3</span> Recurring
+      </button>
+      <button class="cmd-btn scenario" onclick="send('runScenario',[4])">
+        <span class="icon">4</span> Travel
+      </button>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <div class="section">
+    <div class="section-title">Navigate</div>
+    <div class="btn-grid">
+      <button class="cmd-btn" onclick="send('navigate',['index.html'])">Home</button>
+      <button class="cmd-btn" onclick="send('navigate',['search.html'])">Search</button>
+      <button class="cmd-btn" onclick="send('navigate',['select-pickup.html'])">Pickup</button>
+      <button class="cmd-btn" onclick="send('navigate',['select-dropoff.html'])">Dropoff</button>
+      <button class="cmd-btn" onclick="send('navigate',['service-selection.html'])">Service</button>
+      <button class="cmd-btn" onclick="send('navigate',['request.html'])">Request</button>
+      <button class="cmd-btn" onclick="send('navigate',['saved-places.html'])">Saved Places</button>
+      <button class="cmd-btn" onclick="send('navigate',['tracking.html'])">Tracking</button>
+    </div>
+  </div>
+
+  <!-- Actions -->
+  <div class="section">
+    <div class="section-title">Actions</div>
+    <div class="btn-grid">
+      <button class="cmd-btn" onclick="send('reload')">Reload Page</button>
+      <button class="cmd-btn danger" onclick="send('reset')">Reset All State</button>
+    </div>
+  </div>
+
+  <!-- Share link -->
+  <div class="share-section">
+    <p>Share this link to the test participant:</p>
+    <div class="share-link" id="shareLink">—</div>
+    <button class="copy-btn" onclick="copyLink()">Copy Link</button>
+  </div>
+
+  <!-- Firebase SDK (compat) -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+  <script src="js/remote.js"></script>
+
+  <script>
+    let db = null;
+    let sessionId = 'default';
+
+    function connectSession() {
+      sessionId = document.getElementById('sessionInput').value.trim() || 'default';
+
+      if (!Remote.FIREBASE_CONFIG.apiKey) {
+        alert('Firebase config not set yet.\nEdit js/remote.js and fill in FIREBASE_CONFIG.');
+        return;
+      }
+
+      if (!firebase.apps.length) {
+        firebase.initializeApp(Remote.FIREBASE_CONFIG);
+      }
+      db = firebase.database();
+
+      /* Watch user's reported state */
+      db.ref(`sessions/${sessionId}/state`).on('value', snap => {
+        const state = snap.val();
+        const dot = document.getElementById('statusDot');
+        const pageEl = document.getElementById('statusPage');
+        if (state && state.page) {
+          dot.classList.add('connected');
+          pageEl.textContent = state.page;
+        } else {
+          dot.classList.remove('connected');
+          pageEl.textContent = '—';
+        }
+      });
+
+      updateShareLink();
+    }
+
+    function send(action, params) {
+      if (!db) { connectSession(); if (!db) return; }
+      db.ref(`sessions/${sessionId}/command`).set({
+        action,
+        params: params || [],
+        t: Date.now(),
+      });
+    }
+
+    function updateShareLink() {
+      const base = window.location.origin + window.location.pathname.replace('remote.html', '');
+      const link = `${base}index.html?session=${sessionId}`;
+      document.getElementById('shareLink').textContent = link;
+    }
+
+    function copyLink() {
+      const text = document.getElementById('shareLink').textContent;
+      navigator.clipboard.writeText(text);
+      document.querySelector('.copy-btn').textContent = 'Copied!';
+      setTimeout(() => document.querySelector('.copy-btn').textContent = 'Copy Link', 1500);
+    }
+
+    /* Auto-connect on load */
+    const urlSession = new URLSearchParams(window.location.search).get('session');
+    if (urlSession) document.getElementById('sessionInput').value = urlSession;
+    updateShareLink();
+  </script>
+
+</body>
+</html>

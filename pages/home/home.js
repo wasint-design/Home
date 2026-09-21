@@ -632,6 +632,17 @@ function printHelp() {
 /* =========================================================
    EXPOSE ALL TO WINDOW
    ========================================================= */
+window.runScenario = function(n) {
+  if (VARIATIONS[n]) setVariation(n);
+};
+
+window.consoleReset = function() {
+  localStorage.clear();
+  sessionStorage.clear();
+  setVariation(1);
+  document.getElementById('c-panel').classList.add('hidden');
+};
+
 Object.assign(window, {
   setVariation, getVariation: () => {
     console.log(`Current: Variation ${currentVariation} (${VARIATIONS[currentVariation].name})`);
