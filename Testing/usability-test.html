@@ -1071,7 +1071,7 @@ function appendPreset(btn) {
   if (textarea.value) {
     textarea.value += ', ' + text;
   } else {
-    textarea.value = text;
+    textarea.value = text + ' ';
   }
   btn.classList.add('used');
 }
