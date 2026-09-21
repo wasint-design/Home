@@ -2,6 +2,9 @@
    Remote Control — Firebase Realtime DB
    Facilitator can send commands to user's
    prototype session in real-time.
+
+   Firebase SDK is loaded dynamically so it
+   never blocks DOMContentLoaded or page JS.
    ======================================== */
 
 const Remote = (function () {
@@ -19,6 +22,7 @@ const Remote = (function () {
   let db = null;
   let sessionId = null;
   let listening = false;
+  let sdkReady = false;
 
   /* Get or create session ID from URL param */
   function getSessionId() {
@@ -26,31 +30,52 @@ const Remote = (function () {
     return params.get('session') || 'default';
   }
 
+  /* Dynamically load Firebase SDK (non-blocking) */
+  function loadSDK(callback) {
+    /* Already loaded (e.g. controller page loads them statically) */
+    if (typeof firebase !== 'undefined' && firebase.database) {
+      sdkReady = true;
+      callback();
+      return;
+    }
+    const s1 = document.createElement('script');
+    s1.src = 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js';
+    s1.onload = () => {
+      const s2 = document.createElement('script');
+      s2.src = 'https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js';
+      s2.onload = () => { sdkReady = true; callback(); };
+      document.head.appendChild(s2);
+    };
+    document.head.appendChild(s1);
+  }
+
   /* Initialize Firebase + start listening */
   function init() {
-    if (!FIREBASE_CONFIG.apiKey) return; /* not configured yet */
+    if (!FIREBASE_CONFIG.apiKey) return;
     if (listening) return;
 
-    sessionId = getSessionId();
+    loadSDK(() => {
+      sessionId = getSessionId();
 
-    /* Init Firebase (compat SDK loaded via CDN) */
-    if (!firebase.apps.length) {
-      firebase.initializeApp(FIREBASE_CONFIG);
-    }
-    db = firebase.database();
+      if (!firebase.apps.length) {
+        firebase.initializeApp(FIREBASE_CONFIG);
+      }
+      db = firebase.database();
 
-    /* Listen for commands */
-    const cmdRef = db.ref(`sessions/${sessionId}/command`);
-    cmdRef.on('value', snap => {
-      const cmd = snap.val();
-      if (!cmd || !cmd.action) return;
-      /* Clear BEFORE execute — navigate/reload would lose the remove() otherwise */
-      cmdRef.remove().then(() => execute(cmd));
+      /* Listen for commands */
+      const cmdRef = db.ref(`sessions/${sessionId}/command`);
+      cmdRef.on('value', snap => {
+        const cmd = snap.val();
+        if (!cmd || !cmd.action) return;
+        cmdRef.remove().then(() => execute(cmd));
+      });
+
+      listening = true;
+      console.log(`%c Remote `, 'background:#10B981;color:#fff;border-radius:4px;padding:2px 8px;font-weight:600;',
+        `Listening on session: ${sessionId}`);
+
+      reportPage();
     });
-
-    listening = true;
-    console.log(`%c Remote `, 'background:#10B981;color:#fff;border-radius:4px;padding:2px 8px;font-weight:600;',
-      `Listening on session: ${sessionId}`);
   }
 
   /* Execute a received command */
@@ -73,11 +98,9 @@ const Remote = (function () {
         if (typeof window.runScenario === 'function') window.runScenario(cmd.params[0]);
         break;
       case 'eval':
-        /* Run arbitrary JS — for advanced console commands */
         try { new Function(cmd.params[0])(); } catch (e) { console.warn('Remote eval error:', e); }
         break;
       default:
-        /* Try calling as a window function: e.g. action="selectHoppoint", params=[3] */
         if (typeof window[cmd.action] === 'function') {
           window[cmd.action](...(cmd.params || []));
         }
@@ -111,6 +134,5 @@ const Remote = (function () {
 document.addEventListener('DOMContentLoaded', () => {
   if (!document.getElementById('remoteController')) {
     Remote.init();
-    Remote.reportPage();
   }
 });
