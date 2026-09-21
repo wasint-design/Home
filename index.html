@@ -435,25 +435,7 @@
   <script>window.CONSOLE_PAGE = 'home';</script>
   <script src="js/save-favorite.js"></script>
   <script src="proto-console.js"></script>
-  <script>
-    window.consoleReset = function () {
-      localStorage.clear();
-      sessionStorage.clear();
-      document.getElementById('c-panel').classList.add('hidden');
-      location.reload();
-    };
-
-    window.runScenario = function (idx) {
-      consoleReset();
-      const plays = [
-        () => { setVariation(1); },
-        () => { setVariation(2); },
-        () => { setVariation(3); },
-        () => { setVariation(4); },
-      ];
-      plays[idx]?.();
-    };
-  </script>
+  <!-- consoleReset + runScenario defined in home.js -->
 
   <!-- Comment overlay -->
   <div id="c-overlay" class="hidden"
