@@ -126,6 +126,15 @@ function setVariation(n, silent) {
   document.querySelector('.phone').setAttribute('data-variation', n);
   localStorage.setItem('homepage-variation', n);
 
+  /* Remove ?scenario= from URL so it doesn't override on reload */
+  if (!silent) {
+    const url = new URL(window.location);
+    if (url.searchParams.has('scenario')) {
+      url.searchParams.delete('scenario');
+      history.replaceState(null, '', url);
+    }
+  }
+
   const applyFn = variationAppliers[n];
   if (applyFn) applyFn();
 
