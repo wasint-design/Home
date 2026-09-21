@@ -44,9 +44,8 @@ const Remote = (function () {
     cmdRef.on('value', snap => {
       const cmd = snap.val();
       if (!cmd || !cmd.action) return;
-      execute(cmd);
-      /* Clear after execution so same command can be sent again */
-      cmdRef.remove();
+      /* Clear BEFORE execute — navigate/reload would lose the remove() otherwise */
+      cmdRef.remove().then(() => execute(cmd));
     });
 
     listening = true;
