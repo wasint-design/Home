@@ -38,6 +38,18 @@
       color: var(--color-text-muted);
       font-family: var(--font-family);
     }
+    .tracking-home-btn {
+      margin-top: 8px;
+      padding: 10px 32px;
+      background: var(--color-primary);
+      color: white;
+      border: none;
+      border-radius: 24px;
+      font-size: 16px;
+      font-weight: 600;
+      font-family: var(--font-family);
+      cursor: pointer;
+    }
     .tracking-success {
       display: flex;
       flex-direction: column;
@@ -85,6 +97,7 @@
           <span class="tracking-success-desc">Your driver is on the way<br>Estimated arrival: 11-13 mins</span>
         </div>
         <span class="tracking-label">This is a static prototype screen — end of requesting flow</span>
+        <button class="tracking-home-btn tappable" onclick="window.location.href='index.html'">Back to Home</button>
       </div>
     </div>
   </div>

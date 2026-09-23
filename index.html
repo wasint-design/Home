@@ -437,8 +437,10 @@
   <script src="proto-console.js"></script>
   <script>
     window.consoleReset = function () {
+      var v = localStorage.getItem('homepage-variation');
       localStorage.clear();
       sessionStorage.clear();
+      if (v) localStorage.setItem('homepage-variation', v);
       document.getElementById('c-panel').classList.add('hidden');
       location.reload();
     };

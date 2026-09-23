@@ -180,7 +180,7 @@ const V2_DATA = {
   ],
   offers: [
     { type: 'banner', image: 'assets/images/offer-banner-2.png' },
-    { type: 'tonight' },
+    { type: 'banner', image: 'assets/images/offer-banner-1.png' },
     { type: 'weekend' },
   ],
 };
@@ -222,7 +222,7 @@ const V3_DATA = {
   ],
   offers: [
     { type: 'banner', image: 'assets/images/offer-banner-2.png' },
-    { type: 'tonight' },
+    { type: 'banner', image: 'assets/images/offer-banner-1.png' },
     { type: 'weekend' },
   ],
 };

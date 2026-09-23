@@ -93,7 +93,7 @@ body {
 /* --- Mobile Viewport (393px wide, no frame) --- */
 .phone {
   width: 393px;
-  height: 852px;
+  height: min(852px, 100vh);
   background: var(--color-surface);
   overflow: hidden;
   position: relative;

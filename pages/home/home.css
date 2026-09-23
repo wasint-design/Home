@@ -147,7 +147,7 @@
 }
 
 .area-name span:first-child {
-  font: var(--font-body1);
+  font: var(--font-label1);
   color: var(--color-on-primary);
 }
 
@@ -203,12 +203,12 @@
 }
 
 .pickup-label span {
-  font: var(--font-label3);
+  font: var(--font-label2);
   color: var(--color-primary-light);
 }
 
 .pickup-location {
-  font: var(--font-body2);
+  font: var(--font-body1);
   color: var(--color-on-primary);
 }
 
