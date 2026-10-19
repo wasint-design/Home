@@ -2,12 +2,25 @@
    Homepage — Logic, Variation & Console API
    ======================================== */
 
+function clearFlowState() {
+  localStorage.removeItem('selectedDestination');
+  localStorage.removeItem('selectedPickup');
+  localStorage.removeItem('selectedDropoff');
+  sessionStorage.removeItem('searchFocusField');
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+  clearFlowState();
   initDraggables();
   initVariation();
   initCardClicks();
   renderSavedPlaces();
   printHelp();
+});
+
+/* Also clear when restored from bfcache (back button) */
+window.addEventListener('pageshow', e => {
+  if (e.persisted) clearFlowState();
 });
 
 /* =========================================================
